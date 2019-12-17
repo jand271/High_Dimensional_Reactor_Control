@@ -1,3 +1,6 @@
+# ignore mesh files
+*.stl
+
 # ignore image files
 *.png
 
