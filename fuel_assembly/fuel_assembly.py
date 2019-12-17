@@ -62,7 +62,3 @@ class FuelAssembly(object):
         plt.xlim(self._xlim)
         plt.ylim(self._ylim)
         plt.gca().set_aspect('equal', adjustable='box')
-
-        plt.title("Fuel Assembly")
-
-        plt.show()

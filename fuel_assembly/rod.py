@@ -21,6 +21,9 @@ class Rod(object):
         self._radius = radius
         self._plot_color = color
 
+    def get_plot_color(self):
+        return self._plot_color
+
     def get_position(self):
         """
         returns a tuple of the rod (x,y) center position
