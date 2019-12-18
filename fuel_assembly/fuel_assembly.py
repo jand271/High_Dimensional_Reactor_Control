@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from scipy.spatial import KDTree
-from fuel_assembly.rod import Rod
+from fuel_assembly.component import Component
 
 
 class FuelAssembly(object):
@@ -18,21 +18,22 @@ class FuelAssembly(object):
         self._point_kd_tree = None  # KDTree for efficient find 2D nearest component 
         self._kd_tree_updated = False  # flag the keeps track of when the KDTree must be updated
 
-    def add_rod(self, rod):
-        """
-        Adds input rod to FuelAssembly
-        """
-        assert isinstance(rod, Rod)  # checks input
+    def get_domain_limits(self):
+        """ get domain limits """
+        return self._xlim[0], self._xlim[1], self._ylim[0], self._ylim[1]
 
-        point = rod.get_position()
+    def add_component(self, component):
+        """ Adds input component to FuelAssembly"""
+        assert isinstance(component, Component)  # checks input
+
+        point = component.get_position()
         self._rod_points.append(point)
-        self._point_to_rod_hash_map[point] = rod
+        self._point_to_rod_hash_map[point] = component
         self._kd_tree_updated = False  # KDTree must be updated upon next nearest component query
 
     def find_component(self, x, y):
-
         """
-        finds and returns component in fuel assembly corresponding to input (x,y) or returns None if no component
+        Finds and returns component in fuel assembly corresponding to input (x,y) or returns None if no component
         corresponds to input (x,y)
         """
 
