@@ -37,6 +37,12 @@ class UO2(Material):
         """
 
 
+class H20_500K(Material):
+    def __init__(self):
+        super().__init__(thermal_conductivity=0.74, density=831.5, specific_heat_capacity=4.67e3)
+        """https://www.engineeringtoolbox.com/"""
+
+
 class HighBoronSteel(Material):
     def __init__(self):
         super().__init__(thermal_conductivity=1., density=1., specific_heat_capacity=1.)
