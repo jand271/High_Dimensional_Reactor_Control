@@ -44,8 +44,8 @@ class Component(ABC):
 
 
 class UnshapedComponent(Component):
-    def __init__(self, material=None):
-        super().__init__(None, None, None, material=material)
+    def __init__(self, plot_color=None, material=None):
+        super().__init__(None, None, plot_color, material=material)
 
     def is_point_within(self, x, y):
         return True
