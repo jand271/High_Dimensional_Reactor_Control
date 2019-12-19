@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from fuel_assembly.component import Component
-from fuel_assembly.material import UO2, HighBoronSteel
+from fuel_assembly.material import UO2, HighBoronSteel, H20_500K
 
 
 class Rod(Component):
@@ -25,7 +25,8 @@ class Rod(Component):
 
     def plot(self):
         """ plots a circle patch of the rod on current axis """
-        plt.gca().add_patch(plt.Circle((self._x_position, self._y_position), self._radius, color=self._plot_color))
+        plt.gca().add_patch(
+            plt.Circle((self._x_position, self._y_position), self._radius, color=self._plot_color, alpha=0.5))
 
 
 class ControlRod(Rod):
@@ -36,3 +37,8 @@ class ControlRod(Rod):
 class FuelRod(Rod):
     def __init__(self, x_center, y_center, radius):
         super().__init__(x_center, y_center, radius, plot_color='r', material=UO2())
+
+
+class CoolingPipe(Rod):
+    def __init__(self, x_center, y_center, radius):
+        super().__init__(x_center, y_center, radius, plot_color='b', material=H20_500K)

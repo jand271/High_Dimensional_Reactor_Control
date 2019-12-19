@@ -72,7 +72,7 @@ class FEMModel(ABC):
 
         def plot(self):
             for (point, component) in self._component_hash_map.items():
-                plt.scatter(point[0], point[1], color=component.get_plot_color())
+                plt.scatter(point[0], point[1], color=component.get_plot_color(), s=1)
 
     class Coefficient(ABC, UserExpression):
         """Fenics implementation for positionally dependent coefficients"""

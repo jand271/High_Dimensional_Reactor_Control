@@ -21,6 +21,8 @@ class Component(ABC):
         self._plot_color = plot_color
         self._material = material
 
+        self._volumetric_power_density = 0
+
     """ Getters """
 
     def get_position(self):
@@ -31,6 +33,14 @@ class Component(ABC):
 
     def get_material(self):
         return self._material
+
+    def get_volumetric_power_density(self):
+        return self._volumetric_power_density
+
+    """ Setters """
+
+    def set_volumetric_power_density(self, power_density):
+        self._volumetric_power_density = power_density
 
     """ Abstract Methods """
 
