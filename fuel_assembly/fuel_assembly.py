@@ -4,7 +4,7 @@ from fuel_assembly.component import Component
 
 
 class FuelAssembly(object):
-    def __init__(self, xlim=(-1, 1), ylim=(-1, 1)):
+    def __init__(self, xlim=(-1, 1), ylim=(-1, 1), default_component=None):
         """
         FuelAssembly Constructor
         :param xlim: x limits for pyplot
@@ -12,6 +12,7 @@ class FuelAssembly(object):
         """
         self._xlim = xlim
         self._ylim = ylim
+        self._default_component = default_component
 
         self._rod_points = []  # list of all rod center points
         self._point_to_rod_hash_map = {}  # hash map mapping rod center point to rod object
@@ -40,7 +41,7 @@ class FuelAssembly(object):
         """ update kd tree if needed """
         if not self._kd_tree_updated:
             if len(self._rod_points) == 0:
-                return None
+                return self._default_component
             self._point_kd_tree = KDTree(self._rod_points)
             self._kd_tree_updated = True  # set flag to denote that tree need not be updated
 
@@ -51,7 +52,7 @@ class FuelAssembly(object):
         if nearest_component.is_point_within(x, y):
             return nearest_component
         else:
-            return None
+            return self._default_component
 
     def plot(self):
         """
