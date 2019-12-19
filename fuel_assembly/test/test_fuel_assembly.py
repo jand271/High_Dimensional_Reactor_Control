@@ -4,7 +4,7 @@ from fuel_assembly.rod import ControlRod, FuelRod
 
 
 class TestFuelAssembly(unittest.TestCase):
-    def test_contructor(self):
+    def test_constructor(self):
         fa1 = FuelAssembly()
         assert (-1, 1, -1, 1) == fa1.get_domain_limits()
 

@@ -14,7 +14,7 @@ class Component(ABC):
         """ Check Constructor Inputs """
         assert x_position is None or isinstance(x_position, float) or isinstance(x_position, int)
         assert y_position is None or isinstance(y_position, float) or isinstance(y_position, int)
-        assert material is None or issubclass(material, Material)
+        assert material is None or isinstance(material, Material)
 
         self._x_position = x_position
         self._y_position = y_position

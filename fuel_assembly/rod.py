@@ -30,9 +30,9 @@ class Rod(Component):
 
 class ControlRod(Rod):
     def __init__(self, x_center, y_center, radius):
-        super().__init__(x_center, y_center, radius, plot_color='g', material=HighBoronSteel)
+        super().__init__(x_center, y_center, radius, plot_color='g', material=HighBoronSteel())
 
 
 class FuelRod(Rod):
     def __init__(self, x_center, y_center, radius):
-        super().__init__(x_center, y_center, radius, plot_color='r', material=UO2)
+        super().__init__(x_center, y_center, radius, plot_color='r', material=UO2())

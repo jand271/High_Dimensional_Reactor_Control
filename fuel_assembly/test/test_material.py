@@ -3,7 +3,7 @@ from fuel_assembly.material import Material
 
 
 class TestMaterial(unittest.TestCase):
-    def test_contructor(self):
+    def test_constructor(self):
         Material()
 
 
