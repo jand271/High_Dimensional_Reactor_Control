@@ -19,8 +19,9 @@ class PositionMPCController2D:
 
         A = np.eye(3)  # state dynamics
         B = step_time * np.eye(3)  # input velocity dynamics
+        f = np.zeros((3,))
 
-        self.solver = CFTOCSolver(A, B, initial_position, initial_position, horizon, max_speed)
+        self.solver = CFTOCSolver(A, B, f, initial_position, initial_position, horizon, max_speed)
 
     def set_desired_state(self, state):
         """ set xbar of solver """

@@ -4,11 +4,12 @@ import cvxpy
 
 class CFTOCSolver(object):
 
-    def __init__(self, A, B, x0, xbar, N, umax=None):
+    def __init__(self, A, B, f, x0, xbar, N, umax=None):
         """
         CFTOCSolver Constructor: Initializes cvxpy problem with the following params
         :param A: state transition matrix
         :param B: control matrix
+        :param f: affine term in dynamic equation
         :param x0: initial state
         :param xbar: preferred end state
         :param N: number of time steps per cftoc
@@ -18,6 +19,7 @@ class CFTOCSolver(object):
         """ Check Constructor Inputs """
         assert type(A) is np.ndarray, 'A must be a numpy array'
         assert type(B) is np.ndarray, 'B must be a numpy array'
+        assert type(f) is np.ndarray, 'f must be a numpy array'
         assert type(x0) is np.ndarray, 'x0 must be a numpy array'
         assert type(xbar) is np.ndarray, 'xbar must be a numpy array'
         assert type(N) is int, 'N must be an int'
@@ -50,7 +52,7 @@ class CFTOCSolver(object):
         # dynamics constraints
         constraints += [self.X[:, 0] == self.x0]
         for t in range(N):
-            constraints += [self.X[:, t + 1] == A * self.X[:, t] + B * self.U[:, t]]
+            constraints += [self.X[:, t + 1] == A * self.X[:, t] + B * self.U[:, t] + f]
 
         # input constraints
         if umax is not None:
