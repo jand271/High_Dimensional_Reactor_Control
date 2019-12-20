@@ -9,10 +9,10 @@ class PositionMPCController2D:
     def __init__(self, initial_position=np.zeros((3,)), horizon=10, step_time=0.1, max_speed=0.2 / 3):
         """
         Initialized controller
-        :param initial_position: olly initial position
+        :param initial_position: initial position
         :param horizon: MPC horizon
         :param step_time: time in between MPC steps
-        :param max_speed: maximum allowable Folly speed
+        :param max_speed: maximum allowable speed
         """
         self._horizon = horizon
         self._step_time = step_time
@@ -27,13 +27,13 @@ class PositionMPCController2D:
         """ set xbar of solver """
         self.solver.set_xbar(state)
 
-    def update_then_calculate_optimal_actuation(self, current_olly_position):
+    def update_then_calculate_optimal_actuation(self, current_position):
         """
         calculates optimal input for controller
-        :param current_olly_position: current olly position
+        :param current_position: current position
         :return: optimal velocity command
         """
-        return self.solver.calculate_optimal_actuation(current_olly_position)
+        return self.solver.calculate_optimal_actuation(current_position)
 
 
 class TestCFTOCSolver(unittest.TestCase):
