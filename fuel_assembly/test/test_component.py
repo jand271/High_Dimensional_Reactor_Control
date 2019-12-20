@@ -5,7 +5,7 @@ from fuel_assembly.material import UO2
 
 
 class TestComponent(unittest.TestCase):
-    def test_contructor(self):
+    def test_constructor(self):
         UnshapedComponent()
 
         material = Material()
