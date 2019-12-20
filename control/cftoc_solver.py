@@ -4,7 +4,7 @@ import cvxpy
 
 class CFTOCSolver(object):
 
-    def __init__(self, A, B, f, x0, xbar, N, umax=None):
+    def __init__(self, A, B, f, x0, xbar, N, umax=None, Q=None, R=None):
         """
         CFTOCSolver Constructor: Initializes cvxpy problem with the following params
         :param A: state transition matrix
@@ -27,6 +27,16 @@ class CFTOCSolver(object):
         nx = x0.shape[0]
         nu = B.shape[1]
 
+        if Q is None:
+            Q = np.eye(nx)
+        else:
+            assert type(Q) is np.ndarray, 'Q must be a numpy array'
+
+        if R is None:
+            R = np.eye(nu)
+        else:
+            assert type(R) is np.ndarray, 'Q must be a numpy array'
+
         """ assert problem requirements """
         assert A.shape[0] == nx, 'row A must = number of x0 states'
         assert A.shape[0] == A.shape[1], 'A must be square'
@@ -35,6 +45,8 @@ class CFTOCSolver(object):
         assert xbar.ndim == 1, 'xbar must be flat'
         assert len(x0) == len(xbar), 'x0 must be same lengtha s xbar'
         assert umax is None or umax > 0, 'umax must be None or greater than 0'
+        assert Q.shape == (nx, nx), 'Q must have shape (nx, nx)'
+        assert R.shape == (nu, nu), 'R must have shape (nu, nu)'
 
         # initialize cvxpy problem
         self.X = cvxpy.Variable((nx, N + 1))
@@ -66,11 +78,11 @@ class CFTOCSolver(object):
 
         # state cost
         for t in range(1, N + 1):
-            cost += cvxpy.sum_squares(self.X[:, t] - self.xbar)
+            cost += cvxpy.quad_form(self.X[:, t] - self.xbar, Q)
 
         # input cost
         for t in range(N):
-            cost += cvxpy.sum_squares(self.U[:, t])
+            cost += cvxpy.quad_form(self.U[:, t], R)
 
         self.problem = cvxpy.Problem(cvxpy.Minimize(cost), constraints)
 
