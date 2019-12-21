@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from simple_pid import PID
+from fenics import *
 from fuel_assembly.fuel_assembly import FuelAssembly
 from fuel_assembly.component import UnshapedComponent
 from fuel_assembly.rod import Rod
 from fuel_assembly.material import Material
 from fem_model.temperature_fem_model import HeatExchangerFEMModel
-from fenics import *
 
 if __name__ == "__main__":
 
@@ -45,29 +46,30 @@ if __name__ == "__main__":
 
     for rod in heating_rods:
         rod.set_volumetric_power_density(heat_power_density)
-        fa.add_component(rod)
+        fa.add_component(rod, component_set='set_q_dot')
 
     for rod in cooling_rods:
         rod.set_volumetric_power_density(cool_power_density)
-        fa.add_component(rod)
+        fa.add_component(rod, component_set='controllable_q_dot')
 
     dt = 1
-    q = HeatExchangerFEMModel(fa, dt, nx=30, ny=30)
-
-    fa.plot()
-    q.step_time()
-    q._component_hash_map.plot()
-    plt.title('Fuel Assembly and Mesh')
-    plt.show()
-    plt.clf()
+    model = HeatExchangerFEMModel(fa, dt, nx=30, ny=30)
+    controller = PID(1, 1, 1, setpoint=500)
 
     t = 0
-    for i in range(20):
+    for i in range(100):
         t += dt
-        p = plot(q.step_time())
-        plt.colorbar(p, format='%.1f K')
-        plt.xlabel('x [m]')
-        plt.ylabel('y [m]')
-        plt.title('Fuel Assembly Temperature at t={:.2f}s'.format(t))
-        plt.pause(0.5)
-        plt.clf()
+
+        T = model.step_time()
+        T_mean = np.mean(T.vector().get_local())
+        q_dot = controller(T_mean)
+
+        for component in fa.get_component_set('controllable_q_dot'):
+            component.set_volumetric_power_density(q_dot)
+
+    p = plot(T, vmin=490, vmax=510)
+    plt.colorbar(p, format='%.1f K')
+    plt.xlabel('x [m]')
+    plt.ylabel('y [m]')
+    plt.title('Fuel Assembly Temperature at t={:.2f}s'.format(t))
+    plt.savefig('heat_exchanger_PID_steady_state.png')

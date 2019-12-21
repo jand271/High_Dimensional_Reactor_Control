@@ -5,6 +5,7 @@ from fuel_assembly.component import UnshapedComponent
 from fuel_assembly.rod import Rod
 from fuel_assembly.material import Material
 from fem_model.temperature_fem_model import HeatExchangerFEMModel
+from control.heat_exchanger_mpc_controller import HeatExchangerMPCController
 from fenics import *
 
 if __name__ == "__main__":
@@ -45,29 +46,36 @@ if __name__ == "__main__":
 
     for rod in heating_rods:
         rod.set_volumetric_power_density(heat_power_density)
-        fa.add_component(rod)
+        fa.add_component(rod, component_set='set_q_dot')
 
     for rod in cooling_rods:
         rod.set_volumetric_power_density(cool_power_density)
-        fa.add_component(rod)
+        fa.add_component(rod, component_set='controllable_q_dot')
 
-    dt = 1
-    q = HeatExchangerFEMModel(fa, dt, nx=30, ny=30)
+    dt = 1  # works with dt = 1!!!!!
+    model = HeatExchangerFEMModel(fa, dt, nx=20, ny=20)
+    controller = HeatExchangerMPCController(model, 500, max_removal_power_density=1000)
 
     fa.plot()
-    q.step_time()
-    q._component_hash_map.plot()
+    model.step_time()
+    model._component_hash_map.plot()
     plt.title('Fuel Assembly and Mesh')
-    plt.show()
+    plt.savefig('Fuel_Assembly_and_Mesh.png')
     plt.clf()
 
     t = 0
-    for i in range(20):
+    for i in range(10):
         t += dt
-        p = plot(q.step_time())
-        plt.colorbar(p, format='%.1f K')
-        plt.xlabel('x [m]')
-        plt.ylabel('y [m]')
-        plt.title('Fuel Assembly Temperature at t={:.2f}s'.format(t))
-        plt.pause(0.5)
-        plt.clf()
+
+        T = model.step_time()
+        q_dots = controller.update_then_calculate_optimal_actuation(T.vector().get_local())
+
+        for q_dot, component in zip(q_dots, fa.get_component_set('controllable_q_dot')):
+            component.set_volumetric_power_density(q_dot)
+
+    p = plot(T, vmin=490, vmax=510)
+    plt.colorbar(p, format='%.1f K')
+    plt.xlabel('x [m]')
+    plt.ylabel('y [m]')
+    plt.title('Fuel Assembly Steady State Temperature at t={:.2f}s'.format(t))
+    plt.savefig('heat_exchanger_MPC_steady_state.png')

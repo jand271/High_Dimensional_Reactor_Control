@@ -1,3 +1,5 @@
+import numpy as np
+from scipy.sparse import csr_matrix
 from abc import ABC
 from fem_model.fem_model import FEMModel
 from fenics import *
@@ -116,3 +118,37 @@ class HeatExchangerFEMModel(HeatEquationModel):
         solve(self._a == self._L, Tn1)
         self._Tn.assign(Tn1)
         return Tn1
+
+    def state_transition_model(self):
+        M = assemble(
+            - self._rho * self._cp / self._dt * self._Tn1 * self._v * dx
+            - self._k * dot(grad(self._Tn1), grad(self._v)) * dx
+        ).array()
+        M_inverse = np.linalg.inv(M)
+
+        K = assemble(
+            - self._rho * self._cp / self._dt * self._Tn1 * self._v * dx
+        ).array()
+
+        A = np.dot(M_inverse, K)
+
+        v = assemble(- self._v * dx).get_local()
+
+        q_dot_controllable_set = self._fuel_assembly.get_component_set('controllable_q_dot')
+
+        B = np.zeros((A.shape[0], len(q_dot_controllable_set)))
+        for component_index, component in zip(range(len(q_dot_controllable_set)), q_dot_controllable_set):
+            vs = self.get_vertices_of_component(component)
+            B[vs, component_index] = 1
+        B = np.dot(M_inverse, np.multiply(v[:, np.newaxis], B))
+
+        q_dot_uncontrollable_set = self._fuel_assembly.get_component_set('set_q_dot')
+
+        f = np.zeros((A.shape[0],))
+        for component_index, component in zip(range(len(q_dot_controllable_set)), q_dot_uncontrollable_set):
+            vs = self.get_vertices_of_component(component)
+            f[vs] = component.get_volumetric_power_density()
+
+        f = np.dot(M_inverse, np.multiply(v, f))
+
+        return A, B, f

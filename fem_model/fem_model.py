@@ -27,12 +27,23 @@ class FEMModel(ABC):
             x0, x1, y0, y1 = fuel_assembly.get_domain_limits()
             p0 = Point(x0, y0)
             p1 = Point(x1, y1)
-            model_mesh = RectangleMesh(p0, p1, nx, ny, diagonal='right')
+            model_mesh = RectangleMesh(p0, p1, nx, ny, diagonal='crossed')
 
         self._fuel_assembly = fuel_assembly
         self._dt = dt
         self._mesh = model_mesh
         self._component_hash_map = self.ComponentHashMap(fuel_assembly)
+
+        """ Vertex hash map maps each component to the enclosed vertices in the mesh """
+        self._vertex_hash_map = {}
+        for vertex_index, vertex in zip(range(self._mesh.coordinates().shape[0]), self._mesh.coordinates()):
+            component = self._component_hash_map.find_component(tuple(vertex))
+            if component not in self._vertex_hash_map:
+                self._vertex_hash_map[component] = []
+            self._vertex_hash_map[component].append(vertex_index)
+
+    def get_vertices_of_component(self, component):
+        return self._vertex_hash_map[component]
 
     @abstractmethod
     def setup_problem(self):
@@ -40,6 +51,10 @@ class FEMModel(ABC):
 
     @abstractmethod
     def step_time(self):
+        pass
+
+    @abstractmethod
+    def state_transition_model(self):
         pass
 
     """ Nested Classes """
@@ -76,6 +91,7 @@ class FEMModel(ABC):
 
     class Coefficient(ABC, UserExpression):
         """Fenics implementation for positionally dependent coefficients"""
+
         def __init__(self, component_hash_map):
             super().__init__()
             self._component_hash_map = component_hash_map

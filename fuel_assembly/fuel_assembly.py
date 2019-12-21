@@ -19,11 +19,14 @@ class FuelAssembly(object):
         self._point_kd_tree = None  # KDTree for efficient find 2D nearest component 
         self._kd_tree_updated = False  # flag the keeps track of when the KDTree must be updated
 
+        # hash map maps control variable to applicable list of components sets
+        self._component_sets = {}
+
     def get_domain_limits(self):
         """ get domain limits """
         return self._xlim[0], self._xlim[1], self._ylim[0], self._ylim[1]
 
-    def add_component(self, component):
+    def add_component(self, component, component_set=None):
         """ Adds input component to FuelAssembly"""
         assert isinstance(component, Component)  # checks input
 
@@ -31,6 +34,12 @@ class FuelAssembly(object):
         self._rod_points.append(point)
         self._point_to_rod_hash_map[point] = component
         self._kd_tree_updated = False  # KDTree must be updated upon next nearest component query
+
+        # add component to set if applicable
+        if component_set is not None:
+            if component_set not in self._component_sets:
+                self._component_sets[component_set] = []
+            self._component_sets[component_set].append(component)
 
     def find_component(self, x, y):
         """
@@ -53,6 +62,10 @@ class FuelAssembly(object):
             return nearest_component
         else:
             return self._default_component
+
+    def get_component_set(self, component_set):
+        """ return set of components of component_set """
+        return self._component_sets[component_set]
 
     def plot(self):
         """
