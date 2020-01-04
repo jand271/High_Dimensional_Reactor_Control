@@ -107,9 +107,10 @@ class HeatExchangerFEMModel(HeatEquationModel):
         self.setup_problem()
 
     def setup_problem(self):
-        F = self._rho * self._cp / self._dt * (self._Tn1 - self._Tn) * self._v * dx \
-            + self._k * dot(grad(self._Tn1), grad(self._v)) * dx \
-            - self._q_dot * self._v * dx
+        F = - self._rho * self._cp / self._dt * self._Tn1 * self._v * dx \
+            - self._k * dot(grad(self._Tn1), grad(self._v)) * dx \
+            + self._rho * self._cp / self._dt * self._Tn * self._v * dx \
+            + self._q_dot * self._v * dx
 
         self._a, self._L = lhs(F), rhs(F)
 
