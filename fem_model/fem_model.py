@@ -36,7 +36,8 @@ class FEMModel(ABC):
 
         """ Vertex hash map maps each component to the enclosed vertices in the mesh """
         self._vertex_hash_map = {}
-        for vertex_index, vertex in zip(range(self._mesh.coordinates().shape[0]), self._mesh.coordinates()):
+        self._number_of_vertices = self._mesh.coordinates().shape[0]
+        for vertex_index, vertex in zip(range(self._number_of_vertices), self._mesh.coordinates()):
             component = self._component_hash_map.find_component(tuple(vertex))
             if component not in self._vertex_hash_map:
                 self._vertex_hash_map[component] = []
@@ -44,6 +45,9 @@ class FEMModel(ABC):
 
     def get_vertices_of_component(self, component):
         return self._vertex_hash_map[component]
+
+    def get_number_of_vertices(self):
+        return self._number_of_vertices
 
     @abstractmethod
     def setup_problem(self):
