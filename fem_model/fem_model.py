@@ -8,7 +8,7 @@ from fenics import *
 class FEMModel(ABC):
     def __init__(self, fuel_assembly, dt, model_mesh=None, nx=10, ny=10):
         """
-        Rod Constructor
+        FEMModel Constructor
         :param fuel_assembly: fuel assembly design
         :param dt: model step time
         :param model_mesh: input mesh
