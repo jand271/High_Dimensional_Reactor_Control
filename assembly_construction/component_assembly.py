@@ -22,6 +22,10 @@ class ComponentAssembly(object):
         # hash map maps control variable to applicable list of components sets
         self._component_sets = {}
 
+    def __iter__(self):
+        components = self._point_to_rod_hash_map.values()
+        return iter(components)
+
     def get_domain_limits(self):
         """ get domain limits """
         return self._xlim[0], self._xlim[1], self._ylim[0], self._ylim[1]
