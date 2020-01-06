@@ -23,7 +23,7 @@ class ComponentAssembly(object):
         self._component_sets = {}
 
     def __iter__(self):
-        components = self._point_to_rod_hash_map.values()
+        components = self._point_to_component_hash_map.values()
         return iter(components)
 
     def get_domain_limits(self):
