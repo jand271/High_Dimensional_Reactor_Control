@@ -1,25 +1,25 @@
 import unittest
-from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component_assembly import ComponentAssembly
 from assembly_construction.rod import ControlRod, FuelRod
 from assembly_construction.component import UnshapedComponent
 
 
-class TestFuelAssembly(unittest.TestCase):
+class TestComponentAssembly(unittest.TestCase):
     def test_constructor(self):
-        fa1 = FuelAssembly()
+        fa1 = ComponentAssembly()
         assert (-1, 1, -1, 1) == fa1.get_domain_limits()
 
-        fa2 = FuelAssembly(xlim=(-2, 3), ylim=(-5, 7))
+        fa2 = ComponentAssembly(xlim=(-2, 3), ylim=(-5, 7))
         assert (-2, 3, -5, 7) == fa2.get_domain_limits()
 
-        fa3 = FuelAssembly(ylim=(-5, 7))
+        fa3 = ComponentAssembly(ylim=(-5, 7))
         assert (-1, 1, -5, 7) == fa3.get_domain_limits()
 
-        fa4 = FuelAssembly(xlim=(-2, 3))
+        fa4 = ComponentAssembly(xlim=(-2, 3))
         assert (-2, 3, -1, 1) == fa4.get_domain_limits()
 
     def test_kd_tree(self):
-        fa = FuelAssembly()
+        fa = ComponentAssembly()
 
         assert fa.find_component(0, 0) is None
 
@@ -62,7 +62,7 @@ class TestFuelAssembly(unittest.TestCase):
 
     def test_kd_tree_with_default_component(self):
         default_component = UnshapedComponent()
-        fa = FuelAssembly(default_component=default_component)
+        fa = ComponentAssembly(default_component=default_component)
 
         assert fa.find_component(0, 0) is default_component
 

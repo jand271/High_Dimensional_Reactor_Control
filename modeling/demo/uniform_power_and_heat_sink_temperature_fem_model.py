@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component_assembly import ComponentAssembly
 from assembly_construction.component import UnshapedComponent
 from assembly_construction.material import Material
 from modeling.temperature_fem_model import UniformPowerAndHeatSinkTemperatureFEMModel
@@ -7,7 +7,7 @@ from fenics import *
 
 if __name__ == "__main__":
 
-    fa = FuelAssembly(default_component=UnshapedComponent(
+    fa = ComponentAssembly(default_component=UnshapedComponent(
         material=Material(thermal_conductivity=1., specific_heat_capacity=1., density=1.)))
 
     q = UniformPowerAndHeatSinkTemperatureFEMModel(fa, 0.05, nx=10, ny=10)

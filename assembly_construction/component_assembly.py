@@ -3,10 +3,10 @@ from scipy.spatial import KDTree
 from assembly_construction.component import Component
 
 
-class FuelAssembly(object):
+class ComponentAssembly(object):
     def __init__(self, xlim=(-1, 1), ylim=(-1, 1), default_component=None):
         """
-        FuelAssembly Constructor
+        ComponentAssembly Constructor
         :param xlim: x limits for pyplot
         :param ylim: y limits for pyplot
         """
@@ -14,8 +14,8 @@ class FuelAssembly(object):
         self._ylim = ylim
         self._default_component = default_component
 
-        self._rod_points = []  # list of all rod center points
-        self._point_to_rod_hash_map = {}  # hash map mapping rod center point to rod object
+        self._component_points = []  # list of all component center points
+        self._point_to_component_hash_map = {}  # hash map mapping component center point to component object
         self._point_kd_tree = None  # KDTree for efficient find 2D nearest component 
         self._kd_tree_updated = False  # flag the keeps track of when the KDTree must be updated
 
@@ -27,12 +27,12 @@ class FuelAssembly(object):
         return self._xlim[0], self._xlim[1], self._ylim[0], self._ylim[1]
 
     def add_component(self, component, component_set=None):
-        """ Adds input component to FuelAssembly"""
+        """ Adds input component to ComponentAssembly"""
         assert isinstance(component, Component)  # checks input
 
         point = component.get_position()
-        self._rod_points.append(point)
-        self._point_to_rod_hash_map[point] = component
+        self._component_points.append(point)
+        self._point_to_component_hash_map[point] = component
         self._kd_tree_updated = False  # KDTree must be updated upon next nearest component query
 
         # add component to set if applicable
@@ -49,14 +49,14 @@ class FuelAssembly(object):
 
         """ update kd tree if needed """
         if not self._kd_tree_updated:
-            if len(self._rod_points) == 0:
+            if len(self._component_points) == 0:
                 return self._default_component
-            self._point_kd_tree = KDTree(self._rod_points)
+            self._point_kd_tree = KDTree(self._component_points)
             self._kd_tree_updated = True  # set flag to denote that tree need not be updated
 
         distance, nearest_point_index = self._point_kd_tree.query((x, y))
-        nearest_point = self._rod_points[nearest_point_index]
-        nearest_component = self._point_to_rod_hash_map[nearest_point]
+        nearest_point = self._component_points[nearest_point_index]
+        nearest_component = self._point_to_component_hash_map[nearest_point]
 
         if nearest_component.is_point_within(x, y):
             return nearest_component
@@ -71,8 +71,8 @@ class FuelAssembly(object):
         """
         plot fuel assembly with pyplot
         """
-        for rod in self._point_to_rod_hash_map.values():
-            rod.plot()
+        for component in self._point_to_component_hash_map.values():
+            component.plot()
 
         plt.xlim(self._xlim)
         plt.ylim(self._ylim)

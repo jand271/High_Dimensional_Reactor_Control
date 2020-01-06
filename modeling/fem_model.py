@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
-from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component_assembly import ComponentAssembly
 from assembly_construction.component import Component
 from fenics import *
 
@@ -16,7 +16,7 @@ class FEMModel(ABC):
         """
 
         """ Check Constructor Inputs """
-        assert isinstance(fuel_assembly, FuelAssembly)
+        assert isinstance(fuel_assembly, ComponentAssembly)
         assert isinstance(dt, float) or isinstance(dt, int)
         assert model_mesh is None or isinstance(model_mesh, Mesh)
         assert isinstance(nx, int)

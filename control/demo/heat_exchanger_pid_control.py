@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from simple_pid import PID
 from fenics import *
-from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component_assembly import ComponentAssembly
 from assembly_construction.component import UnshapedComponent
 from assembly_construction.rod import Rod
 from assembly_construction.material import Material
@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     material = Material(thermal_conductivity=1., specific_heat_capacity=1., density=1.)
 
-    fa = FuelAssembly(default_component=UnshapedComponent(material=material, plot_color='k'))
+    fa = ComponentAssembly(default_component=UnshapedComponent(material=material, plot_color='k'))
 
     nh = 8
     nc = 9

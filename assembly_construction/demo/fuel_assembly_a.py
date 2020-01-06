@@ -1,12 +1,12 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component_assembly import ComponentAssembly
 from assembly_construction.rod import ControlRod, FuelRod
 
 if __name__ == "__main__":
 
-    fa = FuelAssembly()
+    fa = ComponentAssembly()
 
     r = 0.05
 
