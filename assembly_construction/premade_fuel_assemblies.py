@@ -71,20 +71,23 @@ class ComponentAssemblyB(ComponentAssembly):
         for t in np.linspace(0, 2 * np.pi, nc):
             if t == 0:
                 continue
-            cooling_bars.append(SquareBar(R * np.cos(t), R * np.sin(t), r, plot_color='b', material=material))
+            cooling_bars.append(
+                SquareBar(np.round(R * np.cos(t), 1), np.round(R * np.sin(t), 1), r, plot_color='b', material=material))
 
         # heating bars
         heating_bars = []
-        R = 0.33
+        R = 0.3
         i = 0
         for t in np.linspace(0, 2 * np.pi, nh + 1):
             i += 1
             if t == 0:
                 continue
             if i % 2 == 0:
-                heating_bars.append(SquareBar(R * np.cos(t), R * np.sin(t), r, plot_color='r', material=material))
+                heating_bars.append(SquareBar(np.round(R * np.cos(t), 1), np.round(R * np.sin(t), 1), r, plot_color='r',
+                                              material=material))
             else:
-                cooling_bars.append(SquareBar(R * np.cos(t), R * np.sin(t), r, plot_color='b', material=material))
+                cooling_bars.append(SquareBar(np.round(R * np.cos(t), 1), np.round(R * np.sin(t), 1), r, plot_color='b',
+                                              material=material))
                 nh += -1
                 nc += 1
 
