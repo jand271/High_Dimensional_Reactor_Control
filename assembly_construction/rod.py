@@ -10,7 +10,9 @@ class Rod(Component):
         Rod Constructor
         :param x_center: x position of Component
         :param y_center: y position of Component
+        :param radius: radius of rod
         :param plot_color: applicable plotting color
+        :param material: material of component
         """
         super().__init__(x_center, y_center, plot_color, material=material)
 
@@ -21,7 +23,7 @@ class Rod(Component):
 
     def is_point_within(self, x, y):
         """ Checks if input position (x,y) is within the rod """
-        return (x - self._x_position) ** 2 + (y - self._y_position) ** 2 < self._radius ** 2
+        return (x - self._x_position) ** 2 + (y - self._y_position) ** 2 <= self._radius ** 2
 
     def plot(self):
         """ plots a circle patch of the rod on current axis """

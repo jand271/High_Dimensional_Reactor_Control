@@ -9,6 +9,7 @@ class TestRod(unittest.TestCase):
         assert (0, 0) == r1.get_position()
 
         r2 = Rod(0, 0, 1, plot_color='k')
+        assert 'k' == r2.get_plot_color()
 
         material = Material()
         r3 = Rod(0, 0, 1, plot_color='k', material=material)
@@ -19,6 +20,28 @@ class TestRod(unittest.TestCase):
 
         cr = ControlRod(0, 0, 1)
         assert isinstance(cr.get_material(), HighBoronSteel)
+
+    def test_is_point_within(self):
+        r = Rod(0, 0, 1)
+
+        assert r.is_point_within(0, 0)
+        assert r.is_point_within(0, 1)
+        assert r.is_point_within(1, 0)
+        assert r.is_point_within(0, -1)
+        assert r.is_point_within(-1, 0)
+        assert r.is_point_within(0.5, 0.5)
+        assert r.is_point_within(0.5, -0.5)
+        assert r.is_point_within(-0.5, 0.5)
+        assert r.is_point_within(-0.5, -0.5)
+
+        assert not r.is_point_within(0, 2)
+        assert not r.is_point_within(2, 0)
+        assert not r.is_point_within(0, -2)
+        assert not r.is_point_within(-2, 0)
+        assert not r.is_point_within(1.5, 1.5)
+        assert not r.is_point_within(1.5, -1.5)
+        assert not r.is_point_within(-1.5, 1.5)
+        assert not r.is_point_within(-1.5, -1.5)
 
 
 if __name__ == '__main__':
