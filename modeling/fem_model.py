@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
-from fuel_assembly.fuel_assembly import FuelAssembly
-from fuel_assembly.component import Component
+from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component import Component
 from fenics import *
 
 

@@ -1,7 +1,7 @@
 import unittest
-from fuel_assembly.component import UnshapedComponent
-from fuel_assembly.material import Material
-from fuel_assembly.material import UO2
+from assembly_construction.component import UnshapedComponent
+from assembly_construction.material import Material
+from assembly_construction.material import UO2
 
 
 class TestComponent(unittest.TestCase):

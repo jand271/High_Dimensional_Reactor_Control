@@ -1,5 +1,5 @@
 import unittest
-from fuel_assembly.material import Material
+from assembly_construction.material import Material
 
 
 class TestMaterial(unittest.TestCase):

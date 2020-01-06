@@ -1,8 +1,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from fuel_assembly.fuel_assembly import FuelAssembly
-from fuel_assembly.rod import ControlRod, FuelRod
+from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.rod import ControlRod, FuelRod
 
 if __name__ == "__main__":
 

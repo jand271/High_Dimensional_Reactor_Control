@@ -1,6 +1,6 @@
 import unittest
-from fuel_assembly.rod import Rod, ControlRod, FuelRod
-from fuel_assembly.material import Material, UO2, HighBoronSteel
+from assembly_construction.rod import Rod, ControlRod, FuelRod
+from assembly_construction.material import Material, UO2, HighBoronSteel
 
 
 class TestRod(unittest.TestCase):

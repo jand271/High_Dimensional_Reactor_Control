@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-from fuel_assembly.component import Component
-from fuel_assembly.material import UO2, HighBoronSteel, H20_500K
+from assembly_construction.component import Component
+from assembly_construction.material import UO2, HighBoronSteel, H20_500K
 
 
 class Rod(Component):

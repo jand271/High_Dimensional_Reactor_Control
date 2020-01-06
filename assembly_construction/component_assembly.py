@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from scipy.spatial import KDTree
-from fuel_assembly.component import Component
+from assembly_construction.component import Component
 
 
 class FuelAssembly(object):

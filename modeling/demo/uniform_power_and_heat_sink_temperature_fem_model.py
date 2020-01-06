@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-from fuel_assembly.fuel_assembly import FuelAssembly
-from fuel_assembly.component import UnshapedComponent
-from fuel_assembly.material import Material
-from fem_model.temperature_fem_model import UniformPowerAndHeatSinkTemperatureFEMModel
+from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.component import UnshapedComponent
+from assembly_construction.material import Material
+from modeling.temperature_fem_model import UniformPowerAndHeatSinkTemperatureFEMModel
 from fenics import *
 
 if __name__ == "__main__":

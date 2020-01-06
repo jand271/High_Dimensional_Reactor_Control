@@ -1,7 +1,7 @@
 import unittest
-from fuel_assembly.fuel_assembly import FuelAssembly
-from fuel_assembly.rod import ControlRod, FuelRod
-from fuel_assembly.component import UnshapedComponent
+from assembly_construction.component_assembly import FuelAssembly
+from assembly_construction.rod import ControlRod, FuelRod
+from assembly_construction.component import UnshapedComponent
 
 
 class TestFuelAssembly(unittest.TestCase):

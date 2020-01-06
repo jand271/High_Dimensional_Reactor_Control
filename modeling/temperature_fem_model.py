@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from abc import ABC
-from fem_model.fem_model import FEMModel
+from modeling.fem_model import FEMModel
 from fenics import *
 
 

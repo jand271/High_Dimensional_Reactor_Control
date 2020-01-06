@@ -1,5 +1,5 @@
 import numpy as np
-from fem_model.fem_model import FEMModel
+from modeling.fem_model import FEMModel
 from control.cftoc_solver import CFTOCSolver
 
 

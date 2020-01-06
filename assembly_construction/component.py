@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from fuel_assembly.material import Material
+from assembly_construction.material import Material
 
 
 class Component(ABC):
