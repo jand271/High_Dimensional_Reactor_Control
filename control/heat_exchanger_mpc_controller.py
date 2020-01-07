@@ -1,6 +1,6 @@
 import numpy as np
 from modeling.fem_model import FEMModel
-from control.cftoc_solver import CFTOCSolver
+from control.solvers import CFTOCSolver
 
 
 class HeatExchangerMPCController(object):
