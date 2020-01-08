@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 class Solver(ABC):
 
-    def __init__(self, nx, nu, N, x0, xbar):
+    def __init__(self, nx, nu, N, x0, xbar, Q=None, R=None, umax=None):
         """
         CFTOCSolver Constructor: Initializes cvxpy problem with the following params
         :param nx number of x states
@@ -26,6 +26,18 @@ class Solver(ABC):
         assert len(x0) == nx, 'length of x0 must be nx'
         assert len(xbar) == nx, 'length of xbar must be nx'
 
+        if Q is None:
+            Q = np.eye(nx)
+        else:
+            assert type(Q) is np.ndarray, 'Q must be a numpy array'
+            assert Q.shape == (nx, nx), 'Q must have shape (nx, nx)'
+
+        if R is None:
+            R = np.eye(nu)
+        else:
+            assert type(R) is np.ndarray, 'Q must be a numpy array'
+            assert R.shape == (nu, nu), 'R must have shape (nu, nu)'
+
         # initialize cvxpy problem
         self.X = cvxpy.Variable((nx, N + 1))
         self.U = cvxpy.Variable((nu, N))
@@ -36,6 +48,28 @@ class Solver(ABC):
         # initialize Parameters
         self.x0.value = x0
         self.xbar.value = xbar
+
+        # constraints
+        self.constraints = []
+        self.constraints.append(self.X[:, 0] == self.x0)
+
+        # input constraints
+        if umax is not None:
+            self.umax = cvxpy.Parameter()
+            self.umax.value = umax
+            for t in range(N):
+                self.constraints.append(cvxpy.norm(self.U[:, t], 'inf') <= self.umax)
+
+        # cost function initialization
+        self.cost = 0
+
+        # state cost
+        for t in range(1, N + 1):
+            self.cost += cvxpy.quad_form(self.X[:, t] - self.xbar, Q)
+
+        # input cost
+        for t in range(N):
+            self.cost += cvxpy.quad_form(self.U[:, t], R)
 
     def set_xbar(self, xbar):
         """ update new xbar value"""
@@ -88,6 +122,13 @@ class CFTOCSolver(Solver):
         assert A.shape[0] == A.shape[1], 'A must be square'
         assert B.shape[0] == nx, 'row B must = number of x0 states'
         assert umax is None or umax > 0, 'umax must be None or greater than 0'
+
+        super().__init__(nx, nu, N, x0, xbar, umax=umax, Q=Q, R=R)
+
+        for t in range(N):
+            self.constraints.append(self.X[:, t + 1] == A * self.X[:, t] + B * self.U[:, t] + f)
+
+        self.problem = cvxpy.Problem(cvxpy.Minimize(self.cost), self.constraints)
 
         super().__init__(nx, nu, N, x0, xbar)
 
