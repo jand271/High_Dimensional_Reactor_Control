@@ -126,48 +126,6 @@ class CFTOCSolver(Solver):
         super().__init__(nx, nu, N, x0, xbar, umax=umax, Q=Q, R=R)
 
         for t in range(N):
-            self.constraints.append(self.X[:, t + 1] == A * self.X[:, t] + B * self.U[:, t] + f)
+            self.constraints.append(self.X[:, t + 1] == A @ self.X[:, t] + B @ self.U[:, t] + f)
 
         self.problem = cvxpy.Problem(cvxpy.Minimize(self.cost), self.constraints)
-
-        super().__init__(nx, nu, N, x0, xbar)
-
-        if Q is None:
-            Q = np.eye(nx)
-        else:
-            assert type(Q) is np.ndarray, 'Q must be a numpy array'
-            assert Q.shape == (nx, nx), 'Q must have shape (nx, nx)'
-
-        if R is None:
-            R = np.eye(nu)
-        else:
-            assert type(R) is np.ndarray, 'Q must be a numpy array'
-            assert R.shape == (nu, nu), 'R must have shape (nu, nu)'
-
-        # initialize constraints
-        constraints = []
-
-        # dynamics constraints
-        constraints += [self.X[:, 0] == self.x0]
-        for t in range(N):
-            constraints += [self.X[:, t + 1] == A * self.X[:, t] + B * self.U[:, t] + f]
-
-        # input constraints
-        if umax is not None:
-            self.umax = cvxpy.Parameter()
-            self.umax.value = umax
-            for t in range(N):
-                constraints += [cvxpy.norm(self.U[:, t], 'inf') <= self.umax]
-
-        # cost function initialization
-        cost = 0
-
-        # state cost
-        for t in range(1, N + 1):
-            cost += cvxpy.quad_form(self.X[:, t] - self.xbar, Q)
-
-        # input cost
-        for t in range(N):
-            cost += cvxpy.quad_form(self.U[:, t], R)
-
-        self.problem = cvxpy.Problem(cvxpy.Minimize(cost), constraints)
