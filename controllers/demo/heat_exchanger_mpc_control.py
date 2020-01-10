@@ -5,7 +5,7 @@ from assembly_construction.component import UnshapedComponent
 from assembly_construction.rod import Rod
 from assembly_construction.material import Material
 from modeling.temperature_fem_model import HeatExchangerFEMModel
-from control.heat_exchanger_mpc_controller import HeatExchangerMPCController
+from controllers.heat_exchanger_mpc_controller import HeatExchangerMPCController
 from fenics import *
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 from assembly_construction.premade_fuel_assemblies import *
 from modeling.temperature_fem_model import HeatExchangerFEMModel
-from control.heat_exchanger_mpc_controller import HeatExchangerMPCController
+from controllers.heat_exchanger_mpc_controller import HeatExchangerMPCController
 from fenics import *
 
 if __name__ == "__main__":
@@ -11,18 +11,23 @@ if __name__ == "__main__":
     fa = ComponentAssemblyB()
 
     dt = 1  # works with dt = 1!!!!!
-    model = HeatExchangerFEMModel(fa, dt, nx=15, ny=15)
+    model = HeatExchangerFEMModel(fa, dt, nx=30, ny=30)
 
     Q_diagonal = np.ones((model.get_number_of_vertices(),))
     # for rod in heating_rods and cooling_rods:
     for rod in fa:
         Q_diagonal[model._vertex_hash_map[rod]] = 0
 
-    controller = HeatExchangerMPCController(
-        model,
-        500,
-        max_removal_power_density=1000,
-        Q=np.diag(Q_diagonal))
+    A, B, f = model.state_transition_model()
+    from controllers.dlqr import *
+    controller = TrackingAffineDLQR(A, B, f, xbar=500*np.ones((A.shape[0],)), max_iter=15)
+    #controller = AffineDLQR(A, B, f)
+
+    # controller = HeatExchangerMPCController(
+    #     model,
+    #     500,
+    #     max_removal_power_density=1000,
+    #     Q=np.diag(Q_diagonal))
 
     fa.plot()
     model.step_time()

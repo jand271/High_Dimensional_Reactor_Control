@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from control.solvers import CFTOCSolver
+from controllers.solvers import CFTOCSolver
 
 
 class PositionMPCController2D:
