@@ -2,7 +2,7 @@ import numpy as np
 import unittest
 from controllers.dlqr import *
 
-""" Model Dynamics """
+""" Model Dynamics for a simple unicycle robot with positional states and control inputs of velocity """
 step_time = 1
 A = np.eye(3)  # state dynamics
 B = step_time * np.eye(3)  # input velocity dynamics
