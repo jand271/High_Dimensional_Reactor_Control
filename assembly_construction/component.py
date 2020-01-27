@@ -22,6 +22,7 @@ class Component(ABC):
         self._material = material
 
         self._volumetric_power_density = 0
+        self._volumetric_neutron_source = 0
 
     """ Getters """
 
@@ -37,10 +38,16 @@ class Component(ABC):
     def get_volumetric_power_density(self):
         return self._volumetric_power_density
 
+    def get_volumetric_neutron_source(self):
+        return self._volumetric_neutron_source
+
     """ Setters """
 
     def set_volumetric_power_density(self, power_density):
         self._volumetric_power_density = power_density
+
+    def set_volumetric_neutron_source(self, neutron_source):
+        self._volumetric_neutron_source = neutron_source
 
     """ Abstract Methods """
 

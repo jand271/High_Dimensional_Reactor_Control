@@ -102,6 +102,56 @@ class ComponentAssemblyB(ComponentAssembly):
             self.add_component(bar, component_set='controllable_q_dot')
 
 
+class ComponentAssemblyC(ComponentAssembly):
+
+    def __init__(self):
+        """ creates neuclear fuel assembly with 17 cylinder control rods """
+
+        fissile_dummy_material = Material(
+            thermal_conductivity=1.,
+            density=1.,
+            specific_heat_capacity=1.,
+            diffusion_length=1.,
+            absorption_macroscopic_cross_section=1.,
+            fission_macroscopic_cross_section=1.)
+
+        super().__init__(default_component=UnshapedComponent(material=fissile_dummy_material, plot_color='k'))
+
+        dummy_material = Material(
+            thermal_conductivity=1.,
+            density=1.,
+            specific_heat_capacity=1.,
+            diffusion_length=1.,
+            absorption_macroscopic_cross_section=1.,
+            fission_macroscopic_cross_section=0.)
+
+        control_rod_material = dummy_material
+
+        nh = 8
+        nc = 9
+        r = 0.1
+
+        # cooling rods
+        control_rods = [Rod(0, 0, r, plot_color='b', material=control_rod_material)]
+        R = 0.6
+        for t in np.linspace(0, 2 * np.pi, nc):
+            if t == 0:
+                continue
+            control_rods.append(Rod(R * np.cos(t), R * np.sin(t), r, plot_color='b', material=control_rod_material))
+
+        R = 0.33
+        i = 0
+        for t in np.linspace(0, 2 * np.pi, nh + 1):
+            if t == 0:
+                continue
+            control_rods.append(Rod(R * np.cos(t), R * np.sin(t), r, plot_color='b', material=control_rod_material))
+
+        starting_neutron_poison_density = -1e5
+
+        for rod in control_rods:
+            rod.set_volumetric_neutron_source(starting_neutron_poison_density)
+            self.add_component(rod, component_set='control_rods')
+
 if __name__ == '__main__':
     fa_A = ComponentAssemblyA()
     fa_A.plot()
@@ -112,5 +162,11 @@ if __name__ == '__main__':
     fa_B = ComponentAssemblyB()
     fa_B.plot()
     plt.savefig('Fuel_Assembly_B.png')
+
+    plt.clf()
+
+    fa_C = ComponentAssemblyC()
+    fa_C.plot()
+    plt.savefig('Fuel_Assembly_C.png')
 
     plt.clf()
