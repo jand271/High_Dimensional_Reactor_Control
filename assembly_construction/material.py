@@ -9,9 +9,12 @@ class Material(object):
         """ Check Constructor Inputs """
 
         for material_property in [thermal_conductivity, density, specific_heat_capacity, diffusion_length,
-                                  absorption_macroscopic_cross_section, fission_macroscopic_cross_section]:
+                                  absorption_macroscopic_cross_section]:
             assert material_property is None or isinstance(material_property, float), \
                 "Material property either not None or not a float"
+
+        assert fission_macroscopic_cross_section is None or isinstance(fission_macroscopic_cross_section, float) \
+               or fission_macroscopic_cross_section == 0, "Material property either not None or not a float"
 
         self._thermal_conductivity = thermal_conductivity
         self._density = density
