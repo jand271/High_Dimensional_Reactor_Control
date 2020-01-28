@@ -67,9 +67,9 @@ class NuclearReactorNeutronicsFEMModel(NeutronDiffusionEquationModel):
     def setup_problem(self):
         F = - 1 / self._v_n / self._dt * self._PHIn1 * self._v * dx \
             - self._D * dot(grad(self._PHIn1), grad(self._v)) * dx \
-            - (self._nu * self._Sigma_f - self._Sigma_a) * self._PHIn1 * self._v * dx \
             + 1 / self._v_n / self._dt * self._PHIn * self._v * dx \
-            + self._S * self._v * dx
+            + self._S * self._v * dx \
+            + (self._nu * self._Sigma_f - self._Sigma_a) * self._PHIn1 * self._v * dx
 
         self._a, self._L = lhs(F), rhs(F)
 
