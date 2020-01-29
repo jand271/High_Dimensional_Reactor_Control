@@ -129,3 +129,49 @@ class CFTOCSolver(Solver):
             self.constraints.append(self.X[:, t + 1] == A @ self.X[:, t] + B @ self.U[:, t] + f)
 
         self.problem = cvxpy.Problem(cvxpy.Minimize(self.cost), self.constraints)
+
+
+class SoftCFTOCSolver(CFTOCSolver):
+
+    def __init__(self, A, B, f, x0, xbar, N, umin=None, umax=None, penalty=1e6, Q=None, R=None):
+        """
+        CFTOCSolver Constructor: Initializes cvxpy problem with the following params
+        :param A: state transition matrix
+        :param B: control matrix
+        :param f: affine term in dynamic equation
+        :param x0: initial state
+        :param xbar: preferred end state
+        :param N: number of time steps per cftoc
+        :param umin: minimum allowable control actuation
+        :param umax: maximum allowable control actuation
+        :param penalty penalty on the soft constraints
+        """
+
+        """ Check Constructor Inputs """
+        assert isinstance(umin, float) or isinstance(umin, int) or umin is None, "umin must be int of float"
+        assert isinstance(umax, float) or isinstance(umax, int) or umax is None, "umax must be int of float"
+        assert isinstance(penalty, float) or isinstance(penalty, int) or penalty is None, "penalty must be int of float"
+
+        super().__init__(A, B, f, x0, xbar, N, Q=Q, R=R)
+
+        nu = B.shape[1]
+
+        if umax is not None:
+            self.umax = cvxpy.Parameter()
+            self.umax.value = umax
+            self.w1 = cvxpy.Variable((nu, N))
+            for t in range(N):
+                for i in range(nu):
+                    self.constraints.append(self.U[i, t] - self.umax <= self.w1[i, t])
+                    self.cost += penalty * self.w1[i, t] ** 2
+
+        if umin is not None:
+            self.umin = cvxpy.Parameter()
+            self.umin.value = umin
+            self.w2 = cvxpy.Variable((nu, N))
+            for t in range(N):
+                for i in range(nu):
+                    self.constraints.append(self.U[i, t] - self.umin >= self.w2[i, t])
+                    self.cost += penalty * self.w2[i, t] ** 2
+
+        self.problem = cvxpy.Problem(cvxpy.Minimize(self.cost), self.constraints)
