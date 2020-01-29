@@ -9,29 +9,26 @@ if __name__ == "__main__":
 
     fa = ComponentAssemblyC()
 
-    dt = 1  # works with dt = 1!!!!!
-    model = NuclearReactorNeutronicsFEMModel(fa, dt, nx=20, ny=20)
-    controller = NeutronFluxMPCController(model, 1e12, max_removal_neutron_source=1e13)
+    dt = 1
+    model = NuclearReactorNeutronicsFEMModel(fa, dt, nx=10, ny=10)
+    controller = NeutronFluxMPCController(model, 1e12, max_removal_neutron_source=1e14, R=1e-12 * np.eye(17))
 
-    fa.plot()
-    model.step_time()
-    model._component_hash_map.plot()
-    plt.title('Fuel Assembly and Mesh')
-    plt.savefig('Fuel_Assembly_and_Mesh.png')
-    plt.clf()
+    ss = controller.update_then_calculate_optimal_actuation(model._PHI0.values() * np.ones((model.get_number_of_vertices())))
+    for s, component in zip(ss, fa.get_component_set('control_rods')):
+        component.set_volumetric_neutron_source(np.minimum(s, 0))
 
     t = 0
-    for i in range(10):
+    for i in range(20):
         t += dt
 
         PHI = model.step_time()
         ss = controller.update_then_calculate_optimal_actuation(PHI.vector().get_local())
 
         for s, component in zip(ss, fa.get_component_set('control_rods')):
-            component.set_volumetric_neutron_source(s)
+            component.set_volumetric_neutron_source(np.minimum(s, 0))
 
-    p = plot(PHI)
-    plt.colorbar(p, format='%.1e n/cm^2/s')
+    p = plot(PHI, vmin=1e12, vmax=9e12)
+    plt.colorbar(p, format='%.1e n/m^2/s')
     for component in fa.get_component_set('control_rods'):
         plt.annotate('{0:.0e}'.format(component.get_volumetric_neutron_source()), component.get_position())
     plt.xlabel('x [m]')

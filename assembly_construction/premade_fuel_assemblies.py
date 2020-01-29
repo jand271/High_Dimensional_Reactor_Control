@@ -113,7 +113,7 @@ class ComponentAssemblyC(ComponentAssembly):
             specific_heat_capacity=1.,
             diffusion_length=1.,
             absorption_macroscopic_cross_section=1.,
-            fission_macroscopic_cross_section=1.)
+            fission_macroscopic_cross_section=0.80001)  # slightly super critical
 
         super().__init__(default_component=UnshapedComponent(material=fissile_dummy_material, plot_color='k'))
 
@@ -123,7 +123,7 @@ class ComponentAssemblyC(ComponentAssembly):
             specific_heat_capacity=1.,
             diffusion_length=1.,
             absorption_macroscopic_cross_section=1.,
-            fission_macroscopic_cross_section=0.)
+            fission_macroscopic_cross_section=0)
 
         control_rod_material = dummy_material
 
@@ -146,10 +146,7 @@ class ComponentAssemblyC(ComponentAssembly):
                 continue
             control_rods.append(Rod(R * np.cos(t), R * np.sin(t), r, plot_color='b', material=control_rod_material))
 
-        starting_neutron_poison_density = -1e5
-
         for rod in control_rods:
-            rod.set_volumetric_neutron_source(starting_neutron_poison_density)
             self.add_component(rod, component_set='control_rods')
 
 if __name__ == '__main__':

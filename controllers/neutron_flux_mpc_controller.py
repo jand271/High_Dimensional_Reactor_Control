@@ -1,6 +1,6 @@
 import numpy as np
 from modeling.fem_model import FEMModel
-from controllers.solvers import CFTOCSolver
+from controllers.solvers import CFTOCSolver, SoftCFTOCSolver
 
 
 class NeutronFluxMPCController(object):
@@ -14,7 +14,12 @@ class NeutronFluxMPCController(object):
         A, B, f = fem_model.state_transition_model()
         PHI0 = initial_flux * np.ones((A.shape[0],))
 
-        self.solver = CFTOCSolver(A, B, f, PHI0, PHI0, horizon, umax=max_removal_neutron_source, Q=Q, R=R)
+        #self.solver = CFTOCSolver(A, B, f, PHI0, PHI0, horizon, umax=max_removal_neutron_source, Q=Q, R=R)
+        self.solver = SoftCFTOCSolver(A, B, f, PHI0, PHI0, horizon,
+                                      umin=-max_removal_neutron_source,
+                                      umax=0,
+                                      penalty=1e6,
+                                      Q=Q, R=R)
 
     def set_desired_state(self, state):
         """ set xbar of solver """
