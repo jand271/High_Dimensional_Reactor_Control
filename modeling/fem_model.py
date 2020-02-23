@@ -16,7 +16,7 @@ class FEMModel(ABC):
         """
 
         """ Check Constructor Inputs """
-        assert isinstance(fuel_assembly, ComponentAssembly)
+        assert isinstance(fuel_assembly, ComponentAssembly), 'must input fuel_assembly, check that your initialization is has ()'
         assert isinstance(dt, float) or isinstance(dt, int)
         assert model_mesh is None or isinstance(model_mesh, Mesh)
         assert isinstance(nx, int)
