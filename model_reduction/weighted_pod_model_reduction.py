@@ -61,8 +61,4 @@ class WeightedPODModelReduction(PODModelReduction):
             #     print(loss().numpy())
             opt.minimize(loss, [V])
 
-        """ Compute closest orthonormal matrix to V via the Orthogonal Procrustes Problem """
-        V = V.value().numpy()
-        U, S, ZT = np.linalg.svd(V)
-        I = np.eye(*V.shape)
-        self.V = U @ I @ ZT
+        self.V = self.compute_closest_orthonormal_matrix(V.value().numpy())

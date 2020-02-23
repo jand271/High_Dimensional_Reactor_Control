@@ -65,3 +65,10 @@ class ModelReduction(ABC):
         else:
             raise ValueError("Requested SVD rank r cannot be larger than the columns of the input matrix X")
         return U
+
+    @staticmethod
+    def compute_closest_orthonormal_matrix(X):
+        """ :return: returns closest orthonormal matrix via Orthogonal Procrustes Problem """
+        U, S, ZT = np.linalg.svd(X)
+        I = np.eye(*X.shape)
+        return U @ I @ ZT
