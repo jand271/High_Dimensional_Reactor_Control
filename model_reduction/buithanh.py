@@ -75,7 +75,7 @@ class BuiThanh(GalerkinModelReduction):
         eng.workspace['C'] = matlab.double(self.C.tolist())
         eng.workspace['beta'] = matlab.double([self.beta])
 
-        V = eng.eval('buithanh(M,K,f,U,m,C,beta)')
+        V = np.array(eng.eval('buithanh(M,K,f,U,m,C,beta)'))
         eng.quit()
 
         self.V = self.compute_closest_orthonormal_matrix(V)
