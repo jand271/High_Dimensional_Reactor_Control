@@ -3,7 +3,7 @@ from abc import ABC
 from model_reduction.pod_model_reduction import PODModelReduction
 
 
-class WeightedPODModelReduction(PODModelReduction, ABC):
+class WeightedPODModelReduction(ABC, PODModelReduction):
 
     def __init__(self, X, r, C_full):
         """

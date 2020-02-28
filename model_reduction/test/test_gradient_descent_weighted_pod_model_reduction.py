@@ -1,16 +1,16 @@
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
-from model_reduction.weighted_pod_model_reduction import WeightedPODModelReduction
+from model_reduction.gradient_descent_weighted_pod_model_reduction import GradientDescentWeightedPODModelReduction
 from model_reduction.test.utils import assert_left_singular_vectors_equal
 from unittest import TestCase
 
 
-class TestWeightedPODModelReduction(TestCase):
+class TestGradientDescentWeightedPODModelReduction(TestCase):
     def test_SVD_replication_small(self):
         X = np.array([[3, 2, 2], [2, 3, -2]])
         U, S, Z = np.linalg.svd(X)
 
-        r = WeightedPODModelReduction(X, 2,  np.eye(2))
+        r = GradientDescentWeightedPODModelReduction(X, 2,  np.eye(2))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-5)
 
@@ -21,7 +21,7 @@ class TestWeightedPODModelReduction(TestCase):
 
         U, S, Z = np.linalg.svd(X)
 
-        r = WeightedPODModelReduction(X, nx, np.eye(nx))
+        r = GradientDescentWeightedPODModelReduction(X, nx, np.eye(nx))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-2)
 
@@ -33,7 +33,7 @@ class TestWeightedPODModelReduction(TestCase):
         US = truncated_svd.fit_transform(X)
         U = US / truncated_svd.singular_values_
 
-        r = WeightedPODModelReduction(X, r, np.eye(2))
+        r = GradientDescentWeightedPODModelReduction(X, r, np.eye(2))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-5)
 
@@ -46,6 +46,6 @@ class TestWeightedPODModelReduction(TestCase):
         US = truncated_svd.fit_transform(X)
         U = US / truncated_svd.singular_values_
 
-        r = WeightedPODModelReduction(X, r, np.eye(nx))
+        r = GradientDescentWeightedPODModelReduction(X, r, np.eye(nx))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-2)
