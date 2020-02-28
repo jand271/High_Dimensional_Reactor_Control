@@ -10,9 +10,7 @@ class TestWeightedPODModelReduction(TestCase):
         X = np.array([[3, 2, 2], [2, 3, -2]])
         U, S, Z = np.linalg.svd(X)
 
-        dummy = np.eye(2)
-
-        r = WeightedPODModelReduction(dummy, dummy, np.eye(2), 2, X)
+        r = WeightedPODModelReduction(X, 2,  np.eye(2))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-5)
 
@@ -23,9 +21,7 @@ class TestWeightedPODModelReduction(TestCase):
 
         U, S, Z = np.linalg.svd(X)
 
-        dummy = np.eye(nx)
-
-        r = WeightedPODModelReduction(dummy, dummy, np.eye(nx), nx, X)
+        r = WeightedPODModelReduction(X, nx, np.eye(nx))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-2)
 
@@ -37,9 +33,7 @@ class TestWeightedPODModelReduction(TestCase):
         US = truncated_svd.fit_transform(X)
         U = US / truncated_svd.singular_values_
 
-        dummy = np.eye(2)
-
-        r = WeightedPODModelReduction(dummy, dummy, np.eye(2), r, X)
+        r = WeightedPODModelReduction(X, r, np.eye(2))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-5)
 
@@ -52,8 +46,6 @@ class TestWeightedPODModelReduction(TestCase):
         US = truncated_svd.fit_transform(X)
         U = US / truncated_svd.singular_values_
 
-        dummy = np.eye(nx)
-
-        r = WeightedPODModelReduction(dummy, dummy, np.eye(nx), r, X)
+        r = WeightedPODModelReduction(X, r, np.eye(nx))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-2)
