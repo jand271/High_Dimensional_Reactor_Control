@@ -1,10 +1,10 @@
 import numpy as np
 import matlab.engine
 from os.path import dirname
-from model_reduction.model_reduction import ModelReduction
+from model_reduction.model_reduction import GalerkinModelReduction
 
 
-class BuiThanh(ModelReduction):
+class BuiThanh(GalerkinModelReduction):
     def __init__(self, M, K, f, U, m, C=None, beta=0):
         """
         Constructor for model reduction strategy by Bui-Thanh

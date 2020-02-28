@@ -6,21 +6,40 @@ from scipy.io import savemat
 
 
 class ModelReduction(object):
+    def __init__(self, W=None, V=None):
+        """
+        Model reduction class
+        :param W: Left subspace
+        :param V: Right subspace
+        """
+
+        """ Check Constructor Inputs """
+        assert W is None or W is np.ndarray, "W must be a np.ndarray"
+        assert V is None or V is np.ndarray, "V must be a np.ndarray"
+
+        self.W = W
+        self.V = V
+
+        if V is None or W is None:
+            assert V is None and W is None, "Why is just V or just W None?"
+            self.compute_reduction_bases()
+
+    @abstractmethod
+    def compute_reduction_bases(self):
+        pass
+
+
+class GalerkinModelReduction(ModelReduction):
     def __init__(self, V=None):
         """
-        Abstract class model reduction
+        Galerkin Model reduction constructor
         :param V: reduction basis x^{full} = V x^{reduced}
         """
+        super().__init__(W=V, V=V)
 
-        self.V = None
-
-        if V is None:
-            self.compute_reduction_basis()
-        else:
-            assert V is np.ndarray, "V must be a np.ndarray"
-            self.V = V
-
+    def compute_reduction_bases(self):
         self.compute_reduction_basis()
+        self.W = self.V
 
     def save_reduction_basis(self, directory):
         """ Saves reduction basis to directory """
