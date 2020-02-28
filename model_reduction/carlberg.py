@@ -8,6 +8,9 @@ class Carlberg(WeightedPODModelReduction):
     def compute_reduction_basis(self):
         self.V = self.algorithm_1(self.r, self.X, self.C_full.T @ self.C_full)
 
+    def __str__(self):
+        return 'carlberg_rank_' + str(self.r)
+
     @staticmethod
     def algorithm_1(rank, X, Theta):
         Theta_bar = X.T @ Theta @ X

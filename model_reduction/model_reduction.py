@@ -3,6 +3,7 @@ from numpy.linalg import svd
 from sklearn.decomposition import TruncatedSVD
 from abc import abstractmethod
 from scipy.io import savemat
+from os.path import join
 
 
 class ModelReduction(object):
@@ -19,10 +20,22 @@ class ModelReduction(object):
 
         self.W = W
         self.V = V
+        self.reduction_time = None
 
         if V is None or W is None:
             assert V is None and W is None, "Why is just V or just W None?"
             self.compute_reduction_bases()
+
+    def save_reduction_basis(self, directory, use_obj_str=True):
+        """ Saves reduction basis to directory """
+        assert isinstance(directory, str), 'reduction basis save directory input must be a string'
+        if use_obj_str:
+            directory = join(directory, self.__str__() + '.mat')
+        assert directory[-4:] == '.mat', "path must end in '.mat'"
+        savemat(directory, {'V': self.V, 'W': self.W})
+
+    def __str__(self):
+        return 'model_reduction'
 
     @abstractmethod
     def compute_reduction_bases(self):
@@ -41,11 +54,8 @@ class GalerkinModelReduction(ModelReduction):
         self.compute_reduction_basis()
         self.W = self.V
 
-    def save_reduction_basis(self, directory):
-        """ Saves reduction basis to directory """
-        assert isinstance(directory, str), 'reduction basis save directory input must be a string'
-        assert directory[-4:] == '.mat', "path must end in '.mat'"
-        savemat(directory, {'V': self.V})
+    def __str__(self):
+        return 'galerkin_model_reduction'
 
     @abstractmethod
     def compute_reduction_basis(self):

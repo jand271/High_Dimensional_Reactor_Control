@@ -24,3 +24,6 @@ class MDModelReduction(GalerkinModelReduction):
     def compute_reduction_basis(self):
         """ Computes reduction basis from the left singular vectors of state transition matrix """
         self.V = self.compute_svd_left_singular_vectors(self.A_full, self.r)
+
+    def __str__(self):
+        return 'modal_rank_' + str(self.r)

@@ -79,3 +79,6 @@ class BuiThanh(GalerkinModelReduction):
         eng.quit()
 
         self.V = self.compute_closest_orthonormal_matrix(V)
+
+    def __str__(self):
+        return 'buithanh_rank_' + str(self.m)

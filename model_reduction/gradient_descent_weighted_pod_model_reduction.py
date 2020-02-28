@@ -63,3 +63,6 @@ class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):
             opt.minimize(loss, [V])
 
         self.V = self.compute_closest_orthonormal_matrix(V.value().numpy())
+
+    def __str__(self):
+        return 'grad_descent_rank_' + str(self.r)
