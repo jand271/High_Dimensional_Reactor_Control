@@ -32,7 +32,7 @@ class ModelReduction(object):
         if use_obj_str:
             directory = join(directory, self.__str__() + '.mat')
         assert directory[-4:] == '.mat', "path must end in '.mat'"
-        savemat(directory, {'V': self.V, 'W': self.W})
+        savemat(directory, {'V': self.V, 'W': self.W, 'compute_time_s': self.reduction_time})
 
     def __str__(self):
         return 'model_reduction'
