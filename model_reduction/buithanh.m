@@ -81,5 +81,10 @@ toc
 
 V = value(Phi);
 
+% Orthogonal Procrustes Problem
+[VV,~,WW] = svd(V);
+[m, n] = size(V);
+V = VV * eye(m,n) * WW';
+
 end
 
