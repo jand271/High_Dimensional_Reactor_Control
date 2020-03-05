@@ -22,6 +22,6 @@ class Carlberg(WeightedPODModelReduction):
     @staticmethod
     def algorithm_2(rank, X, square_root_Theta):
         X_bar = square_root_Theta @ X
-        U, S, ZT = PODModelReduction.compute_truncated_svd(X_bar, rank)
+        U, S, ZT = Carlberg.compute_truncated_svd(X_bar, rank)
         SinvZ = np.divide(ZT.T, S)
         return X @ SinvZ
