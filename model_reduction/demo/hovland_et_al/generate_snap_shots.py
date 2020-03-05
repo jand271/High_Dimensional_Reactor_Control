@@ -11,7 +11,7 @@ if __name__ == "__main__":
     nx = A.shape[0]
     nu = B.shape[1]
 
-    ns = 300
+    ns = 40
 
     X = np.zeros((nx, ns))
     X[:, 0] = np.array([-0.9044, -9.1380, -2.5036, 0.6696, -0.0821, -4.0350])
@@ -20,11 +20,5 @@ if __name__ == "__main__":
 
     for i in range(1, ns):
         X[:, i] = A @ X[:, i - 1] + B @ u
-
-        if i == 100:
-            u = -u
-
-        if i == 200:
-            u = u * 0
 
     savemat('snapshots_of_hovland_el_al.mat', {'X': X})
