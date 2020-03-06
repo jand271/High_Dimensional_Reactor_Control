@@ -89,6 +89,7 @@ def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.legend(loc='best')
     plt.xlabel('rank')
     plt.ylabel('error')
+    plt.yscale('log')
     plt.savefig('unweighted_orthogonal_error.png')
     plt.show()
 
@@ -105,6 +106,7 @@ def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.legend(loc='best')
     plt.xlabel('rank')
     plt.ylabel('error')
+    plt.yscale('log')
     plt.savefig('weighted_orthogonal_error.png')
     plt.show()
 

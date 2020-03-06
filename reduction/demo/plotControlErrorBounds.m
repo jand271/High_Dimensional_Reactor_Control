@@ -44,7 +44,7 @@ for reduction = reduction_list
 end
 title('Norm of Du');
 legend(reduction_list, 'Interpreter', 'none')
-ylim([0 40])
+set(gca, 'YScale', 'log')
 saveas(gcf, 'Du_norm.png');
 
 figure;
@@ -54,7 +54,7 @@ for reduction = reduction_list
 end
 title('Norm of Dz');
 legend(reduction_list, 'Interpreter', 'none')
-ylim([0 400])
+set(gca, 'YScale', 'log')
 saveas(gcf, 'Dz_norm.png');
 
 end
