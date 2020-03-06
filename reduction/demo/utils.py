@@ -15,10 +15,9 @@ def compute_and_save_rom(reduction, *args, **kwargs):
     r.save_reduction_basis('output')
 
 
-def compute_and_save_roms(A, B, C, X, r):
+def compute_and_save_roms(A, B, C, X, r, skip=None):
     """ compute and save all roms """
 
-    # BuiThanh(np.eye(A.shape[0]), A, np.zeros((A.shape[0])), X, r, C=C, beta=0)
     reduction_list = [BalancedTruncation,
                       Carlberg,
                       GradientDescentWeightedPODModelReduction,
@@ -30,10 +29,13 @@ def compute_and_save_roms(A, B, C, X, r):
         (X, r, C),
         (A, r),
         (X, r)]
-    kwargs_list = [{}, {}, {}, {}, {}]
 
-    for reduction, args, kwargs in zip(reduction_list, args_list, kwargs_list):
-        compute_and_save_rom(reduction, *args, **kwargs)
+    if skip is not None:
+        reduction_list.pop(skip)
+        args_list.pop(skip)
+
+    for reduction, args in zip(reduction_list, args_list):
+        compute_and_save_rom(reduction, *args)
 
 
 def projector(W, V):
