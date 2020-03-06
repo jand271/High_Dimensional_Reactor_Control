@@ -1,12 +1,12 @@
 import numpy as np
-from scipy.linalg import eigh
+from scipy.linalg import eigh, sqrtm
 from model_reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 
 
 class Carlberg(WeightedPODModelReduction):
 
     def compute_reduction_basis(self):
-        self.V = self.algorithm_1(self.r, self.X, self.C_full.T @ self.C_full)
+        self.V = self.algorithm_2(self.r, self.X, self.C_full.T @ self.C_full)
 
     def __str__(self):
         return 'carlberg_rank_' + str(self.r)
@@ -20,7 +20,11 @@ class Carlberg(WeightedPODModelReduction):
         return X @ SinvV
 
     @staticmethod
-    def algorithm_2(rank, X, square_root_Theta):
+    def algorithm_2(rank, X, Theta):
+        square_root_Theta = sqrtm(Theta)
+        assert np.sum(np.imag(sqrtm(Theta))) < 1e-6, \
+            "np.sum(np.imag(scipy.linalg.sqrtm(Theta))) = {:e} > 1e-6".format(np.sum(np.imag(sqrtm(Theta))))
+        square_root_Theta = np.real(square_root_Theta)
         X_bar = square_root_Theta @ X
         U, S, ZT = Carlberg.compute_truncated_svd(X_bar, rank)
         SinvZ = np.divide(ZT.T, S)

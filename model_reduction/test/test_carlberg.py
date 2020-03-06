@@ -46,6 +46,29 @@ class TestWeightedPODModelReduction(TestCase):
         US = truncated_svd.fit_transform(X)
         U = US / truncated_svd.singular_values_
 
-        r = Carlberg(X,r, np.eye(nx))
+        r = Carlberg(X, r, np.eye(nx))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-2)
+
+    def test_algorithm1_and_algorithm2(self):
+        nx = 10
+        r = 2
+
+        V = np.random.random(size=(nx, nx))
+        D = np.diag(np.arange(nx))
+        X = V @ D @ np.linalg.inv(V)
+
+        # X = np.array([[3, 2, 2, 5, -1], [2, 3, -2, 6, -1]])
+
+        C = np.arange(2 * nx).reshape((2, nx)) + 5
+        Theta = C.T @ C
+
+        V1 = Carlberg.algorithm_1(r, X, Theta)
+        V2 = Carlberg.algorithm_2(r, X, Theta)
+
+        from model_reduction.demo.utils import orthogonal_error
+
+        orthogonal_error(X, C, V1, V1)
+        orthogonal_error(X, C, V2, V2)
+
+        assert np.linalg.norm(np.abs(np.divide(V1, V2)) - np.ones(V1.shape)) < 1e-10
