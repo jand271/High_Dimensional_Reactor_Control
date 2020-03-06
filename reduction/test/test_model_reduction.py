@@ -1,7 +1,7 @@
 import numpy as np
 from unittest import TestCase
-from model_reduction.test.utils import assert_left_singular_vectors_equal
-from model_reduction.model_reduction import GalerkinModelReduction
+from reduction.test.utils import assert_left_singular_vectors_equal
+from reduction.model_reduction import GalerkinModelReduction
 
 
 class TestModelReduction(TestCase):

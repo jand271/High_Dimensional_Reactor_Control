@@ -1,8 +1,8 @@
 import numpy as np
 from unittest import TestCase
 from numpy.linalg import svd
-from model_reduction.md_model_reduction import MDModelReduction
-from model_reduction.test.utils import assert_left_singular_vectors_equal
+from reduction.md_model_reduction import MDModelReduction
+from reduction.test.utils import assert_left_singular_vectors_equal
 
 
 class TestMDModelReduction(TestCase):

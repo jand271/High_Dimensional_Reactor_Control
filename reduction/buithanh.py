@@ -1,7 +1,7 @@
 import numpy as np
 import matlab.engine
 from os.path import dirname
-from model_reduction.model_reduction import GalerkinModelReduction
+from reduction.model_reduction import GalerkinModelReduction
 
 
 class BuiThanh(GalerkinModelReduction):

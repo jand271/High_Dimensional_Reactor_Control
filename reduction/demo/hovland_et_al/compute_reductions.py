@@ -1,5 +1,5 @@
 from scipy.io import loadmat
-from model_reduction.demo.utils import compute_and_save_roms
+from reduction.demo.utils import compute_and_save_roms
 
 if __name__ == "__main__":
 

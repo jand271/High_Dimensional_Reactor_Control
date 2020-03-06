@@ -1,6 +1,6 @@
 import numpy as np
 import matlab.engine
-from model_reduction.model_reduction import ModelReduction
+from reduction.model_reduction import ModelReduction
 
 
 class BalancedTruncation(ModelReduction):

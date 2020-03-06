@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
-from model_reduction.pod_model_reduction import PODModelReduction
-from model_reduction.test.utils import assert_left_singular_vectors_equal
+from reduction.pod_model_reduction import PODModelReduction
+from reduction.test.utils import assert_left_singular_vectors_equal
 from unittest import TestCase
 
 

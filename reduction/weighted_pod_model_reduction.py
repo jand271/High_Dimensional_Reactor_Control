@@ -1,6 +1,6 @@
 import numpy as np
 from abc import ABC
-from model_reduction.pod_model_reduction import PODModelReduction
+from reduction.pod_model_reduction import PODModelReduction
 
 
 class WeightedPODModelReduction(ABC, PODModelReduction):

@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.linalg import eigh, sqrtm
-from model_reduction.weighted_pod_model_reduction import WeightedPODModelReduction
+from reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 
 
 class Carlberg(WeightedPODModelReduction):

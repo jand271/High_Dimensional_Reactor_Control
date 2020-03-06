@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import time
 from scipy.io import loadmat
 from os.path import join
-from model_reduction import *
+from reduction import *
 
 
 def compute_and_save_rom(reduction, *args, **kwargs):

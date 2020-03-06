@@ -1,5 +1,5 @@
 import tensorflow as tf
-from model_reduction.weighted_pod_model_reduction import WeightedPODModelReduction
+from reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 
 
 class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):

@@ -1,6 +1,6 @@
 from scipy.io import loadmat
 
-from model_reduction.demo.utils import compute_first_metrics
+from reduction.demo.utils import compute_first_metrics
 
 if __name__ == "__main__":
     model = loadmat('hovland_et_al_model.mat')

@@ -1,5 +1,5 @@
 import numpy as np
-from model_reduction.model_reduction import GalerkinModelReduction
+from reduction.model_reduction import GalerkinModelReduction
 
 
 class MDModelReduction(GalerkinModelReduction):
