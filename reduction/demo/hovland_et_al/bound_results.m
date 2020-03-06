@@ -9,8 +9,8 @@ reduction_list = {
     'buithanh', ...
     'grad_descent'};
 
-rank_list = [1,2,3,4,5,6];
-max_buithanh_rank = 3;
+rank_list = [1,2,3,4,5];
+max_buithanh_rank = 5;
 
 [FOM, Z, U] = randomSmallSystem();
 

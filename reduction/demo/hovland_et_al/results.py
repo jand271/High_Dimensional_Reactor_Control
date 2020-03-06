@@ -17,7 +17,6 @@ if __name__ == "__main__":
         'modal',
         'pod']
 
-    rank_list = [1, 2, 3, 4, 5, 6]
-    max_rank_buithanh = 3
+    rank_list = [1, 2, 3, 4, 5]
 
-    compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=max_rank_buithanh)
+    compute_first_metrics(X, C, reduction_list, rank_list)
