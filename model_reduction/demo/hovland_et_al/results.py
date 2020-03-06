@@ -9,7 +9,15 @@ if __name__ == "__main__":
     snapshots = loadmat('snapshots_of_hovland_el_al.mat')
     X = snapshots["X"]
 
-    rank_list = [1, 2, 3, 4, 5, 6]
-    max_rank_buithanh = 2
+    reduction_list = [
+        'balanced_truncation',
+        'buithanh',
+        'carlberg',
+        'grad_descent',
+        'modal',
+        'pod']
 
-    compute_first_metrics(X, C, rank_list, max_rank_buithanh=2)
+    rank_list = [1, 2, 3, 4, 5, 6]
+    max_rank_buithanh = 3
+
+    compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=max_rank_buithanh)

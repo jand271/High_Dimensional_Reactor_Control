@@ -46,15 +46,7 @@ def orthogonal_error(X, C, W, V):
     return np.sum(np.linalg.norm(C @ (I - Pi) @ X, axis=0))
 
 
-def compute_first_metrics(X, C, rank_list, max_rank_buithanh=np.infty):
-    reduction_list = [
-        'balanced_truncation',
-        'buithanh',
-        'carlberg',
-        'grad_descent',
-        'modal',
-        'pod']
-
+def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=np.infty):
     error_per_rank_per_method = {}
     unweighted_error_per_rank_per_method = {}
     time_per_rank_per_method = {}
