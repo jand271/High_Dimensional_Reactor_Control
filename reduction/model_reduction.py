@@ -41,6 +41,26 @@ class ModelReduction(object):
     def compute_reduction_bases(self):
         pass
 
+    @staticmethod
+    def compute_state_space_reduction(A, B, f, C, V, W):
+        if W is None:
+            W = V
+
+        Ar = W.T @ A @ V
+        Br = W.T @ B
+
+        if f is not None:
+            f = W.T @ f
+        else:
+            f = None
+
+        if C is not None:
+            Cr = C @ V
+        else:
+            Cr = None
+
+        return Ar, Br, f, Cr
+
 
 class GalerkinModelReduction(ModelReduction):
     def __init__(self, V=None):
