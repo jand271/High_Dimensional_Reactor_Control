@@ -26,6 +26,4 @@ class Carlberg(WeightedPODModelReduction):
             "np.sum(np.imag(scipy.linalg.sqrtm(Theta))) = {:e} > 1e-6".format(np.sum(np.imag(sqrtm(Theta))))
         square_root_Theta = np.real(square_root_Theta)
         X_bar = square_root_Theta @ X
-        U, S, ZT = Carlberg.compute_truncated_svd(X_bar, rank)
-        SinvZ = np.divide(ZT.T, S)
-        return X @ SinvZ
+        return Carlberg.compute_svd_left_singular_vectors(X_bar, rank)
