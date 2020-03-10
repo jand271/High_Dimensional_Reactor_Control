@@ -1,3 +1,4 @@
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from os.path import join
@@ -52,6 +53,10 @@ def main():
 
     for reduction in reduction_list:
         plt.plot(rank_domain[reduction], controller_cost_per_rank[reduction], label=reduction)
+
+    controller = DLQR(A, B, Q=Q, R=R)
+    cost = compute_controller_cost(controller, np.eye(A.shape[0]), x0, A, B, Q, R)
+    plt.axhline(y=cost, label='full-order model', color='k', linestyle='--')
 
     plt.title('Cost per strategy per rank')
     plt.legend(loc='best')
