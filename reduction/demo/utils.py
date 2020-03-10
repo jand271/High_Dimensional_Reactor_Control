@@ -127,7 +127,7 @@ def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.show()
 
 
-def compute_controller_cost(controller, V, x0, A, B, Q, R, f=None, time_steps=100):
+def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, time_steps=100):
     """
     Computes the LQR controller cost over a number of time steps
     :param controller: the controller to measure cost
@@ -141,6 +141,9 @@ def compute_controller_cost(controller, V, x0, A, B, Q, R, f=None, time_steps=10
     :param time_steps: number of time steps to consider
     :return: total cost over time
     """
+
+    if R is None:
+        R = np.eye(B.shape[1])
 
     if f is None:
         f = np.zeros((A.shape[0]))
