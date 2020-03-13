@@ -48,7 +48,7 @@ def orthogonal_error(X, C, W, V):
     return np.sum(np.linalg.norm(C @ (I - Pi) @ X, axis=0))
 
 
-def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=None):
+def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=None):
     if max_rank_buithanh is None:
         max_rank_buithanh = max(rank_list)
 

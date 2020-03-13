@@ -1,6 +1,6 @@
 from scipy.io import loadmat
 
-from reduction.demo.utils import compute_first_metrics
+from reduction.demo.utils import plot_orthogonal_error, plot_reduction_error
 
 if __name__ == "__main__":
     model = loadmat('hovland_et_al_model.mat')
@@ -19,4 +19,4 @@ if __name__ == "__main__":
 
     rank_list = [1, 2, 3, 4, 5]
 
-    compute_first_metrics(X, C, reduction_list, rank_list)
+    plot_orthogonal_error(X, C, reduction_list, rank_list)
