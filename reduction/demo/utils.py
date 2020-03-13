@@ -127,7 +127,7 @@ def compute_first_metrics(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.show()
 
 
-def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, time_steps=100):
+def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, xbar=None, ubar=None, time_steps=100):
     """
     Computes the LQR controller cost over a number of time steps
     :param controller: the controller to measure cost
@@ -138,6 +138,8 @@ def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, time_ste
     :param Q: state cost
     :param R: control cost
     :param f: affine dyanmic term
+    :param xbar: state driven
+    :param ubar: corresponding ubar to xbar
     :param time_steps: number of time steps to consider
     :return: total cost over time
     """
@@ -146,7 +148,13 @@ def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, time_ste
         R = np.eye(B.shape[1])
 
     if f is None:
-        f = np.zeros((A.shape[0]))
+        f = np.zeros((A.shape[0],))
+
+    if xbar is None:
+        xbar = np.zeros((A.shape[0],))
+
+    if ubar is None:
+        ubar = np.zeros((R.shape[1],))
 
     J = np.zeros((time_steps - 1,))  # cost over time
     X = np.zeros((A.shape[0], time_steps))  # state over time
@@ -156,6 +164,8 @@ def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, time_ste
     for i in range(1, time_steps):
         u = controller.update_then_calculate_optimal_actuation(V.T @ X[:, i - 1])  # compute controller actuation
         X[:, i] = A @ X[:, i - 1] + B @ u + f  # apply actuation to compute next state
-        J[i - 1] = X[:, i].T @ Q @ X[:, i] + u.T @ R @ u  # compute cost of state and actuation
+        delx = X[:, i] - xbar
+        delu = u - ubar
+        J[i - 1] = delx.T @ Q @ delx + delu.T @ R @ delu  # compute cost of state and actuation
 
     return np.sum(J)  # return sum of costs
