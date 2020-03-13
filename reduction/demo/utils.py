@@ -48,6 +48,29 @@ def orthogonal_error(X, C, W, V):
     return np.sum(np.linalg.norm(C @ (I - Pi) @ X, axis=0))
 
 
+def reduction_error(X, U, W, V, A, B, C, f=None):
+    (nx, ns) = X.shape
+    (_, nu) = B.shape
+    nxr = V.shape[1]
+
+    if f is None:
+        f = np.zeros((nx,))
+
+    Ar = W.T @ A @ V
+    Br = W.T @ B
+    fr = W.T @ f
+
+    Q = np.zeros((nxr, ns))
+
+    Q[:, 0] = W.T @ X[:, 0]
+    error = 0
+    for i in range(1, ns):
+        Q[:, i] = Ar @ Q[:, i - 1] + Br @ U[:, i - 1] + fr
+        error += np.linalg.norm(C @ (X[:, i] - V @ Q[:, i]))
+
+    return error
+
+
 def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=None):
     if max_rank_buithanh is None:
         max_rank_buithanh = max(rank_list)
@@ -112,18 +135,67 @@ def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.savefig('weighted_orthogonal_error.png')
     plt.show()
 
-    plt.title('Time Per Rank Per Rom')
+
+def plot_reduction_error(X, U, A, B, C, reduction_list, rank_list, f=None, max_rank_buithanh=None):
+    if max_rank_buithanh is None:
+        max_rank_buithanh = max(rank_list)
+
+    error_per_rank_per_method = {}
+    unweighted_error_per_rank_per_method = {}
+    time_per_rank_per_method = {}
+
+    for reduction in reduction_list:
+
+        error_per_rank_per_method[reduction] = []
+        unweighted_error_per_rank_per_method[reduction] = []
+        time_per_rank_per_method[reduction] = []
+
+        for rank in rank_list:
+
+            if reduction == 'buithanh' and rank > max_rank_buithanh:
+                continue
+
+            directory = join('output', reduction + '_rank_' + str(rank))
+
+            data = loadmat(directory)
+            W = data['W']
+            V = data['V']
+
+            error_per_rank_per_method[reduction].append(
+                reduction_error(X, U,  W, V, A, B, C, f=f))
+            unweighted_error_per_rank_per_method[reduction].append(
+                reduction_error(X, U, W, V, A, B, np.eye(X.shape[0]), f=f))
+
+    plt.title('Unweighted Reduction Error Per Rank Per Rom')
     for reduction in reduction_list:
         if reduction == 'buithanh':
-            plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(time_per_rank_per_method[reduction]),
+            plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(unweighted_error_per_rank_per_method[reduction]),
                      label=reduction)
         else:
-            plt.plot(np.array(rank_list), np.array(time_per_rank_per_method[reduction]), label=reduction)
+            plt.plot(np.array(rank_list), np.array(unweighted_error_per_rank_per_method[reduction]), label=reduction)
 
     plt.legend(loc='best')
     plt.xlabel('rank')
-    plt.ylabel('Time [s]')
-    plt.savefig('time.png')
+    plt.ylabel('error')
+    plt.yscale('log')
+    plt.savefig('unweighted_reduction_error.png')
+    plt.show()
+
+    plt.clf()
+
+    plt.title('Weighted Reduction Error Per Rank Per Rom')
+    for reduction in reduction_list:
+        if reduction == 'buithanh':
+            plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(error_per_rank_per_method[reduction]),
+                     label=reduction)
+        else:
+            plt.plot(np.array(rank_list), np.array(error_per_rank_per_method[reduction]), label=reduction)
+
+    plt.legend(loc='best')
+    plt.xlabel('rank')
+    plt.ylabel('error')
+    plt.yscale('log')
+    plt.savefig('weighted_reduction_error.png')
     plt.show()
 
 
