@@ -50,16 +50,16 @@ class ModelReduction(object):
         Br = W.T @ B
 
         if f is not None:
-            f = W.T @ f
+            fr = W.T @ f
         else:
-            f = None
+            fr = None
 
         if C is not None:
             Cr = C @ V
         else:
             Cr = None
 
-        return Ar, Br, f, Cr
+        return Ar, Br, fr, Cr
 
 
 class GalerkinModelReduction(ModelReduction):
