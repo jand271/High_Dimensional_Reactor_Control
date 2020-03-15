@@ -13,4 +13,4 @@ if __name__ == "__main__":
     X = snapshots["X"]
 
     for r in range(20):
-        compute_and_save_roms(A, B, C, X, r + 1, skip=0)
+        compute_and_save_roms(A, B, C, X, r + 1)

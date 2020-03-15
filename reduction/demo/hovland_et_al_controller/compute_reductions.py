@@ -18,4 +18,4 @@ if __name__ == "__main__":
     F = DLQR(A, B, Q=Q, R=R).F
 
     for r in range(6):
-        compute_and_save_roms(A, B, F, X, r + 1, skip=0)
+        compute_and_save_roms(A, B, F, X, r + 1)

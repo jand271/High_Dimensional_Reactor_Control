@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from matplotlib.ticker import MaxNLocator
 from scipy.io import loadmat
 from os.path import join
 from reduction import *
@@ -15,7 +16,7 @@ def compute_and_save_rom(reduction, *args, **kwargs):
     r.save_reduction_basis('output')
 
 
-def compute_and_save_roms(A, B, C, X, r, skip=None):
+def compute_and_save_roms(A, B, C, X, r):
     """ compute and save all roms """
 
     reduction_list = [BalancedTruncation,
@@ -30,9 +31,8 @@ def compute_and_save_roms(A, B, C, X, r, skip=None):
         (A, r),
         (X, r)]
 
-    if skip is not None:
-        reduction_list.pop(skip)
-        args_list.pop(skip)
+    reduction_list = [Carlberg]
+    args_list = [(X, r, C)]
 
     for reduction, args in zip(reduction_list, args_list):
         compute_and_save_rom(reduction, *args)
@@ -77,13 +77,11 @@ def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=Non
 
     error_per_rank_per_method = {}
     unweighted_error_per_rank_per_method = {}
-    time_per_rank_per_method = {}
 
     for reduction in reduction_list:
 
         error_per_rank_per_method[reduction] = []
         unweighted_error_per_rank_per_method[reduction] = []
-        time_per_rank_per_method[reduction] = []
 
         for rank in rank_list:
 
@@ -101,9 +99,8 @@ def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=Non
 
             error_per_rank_per_method[reduction].append(orthogonal_error(X, C, W, V))
             unweighted_error_per_rank_per_method[reduction].append(orthogonal_error(X, np.eye(X.shape[0]), W, V))
-            time_per_rank_per_method[reduction].append(t)
 
-    plt.title('Unweighted Orthogonal Error Per Rank Per Rom')
+    plt.title('Orthogonal Error Per Rank Per Rom')
     for reduction in reduction_list:
         if reduction == 'buithanh':
             plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(unweighted_error_per_rank_per_method[reduction]),
@@ -115,12 +112,13 @@ def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.xlabel('rank')
     plt.ylabel('error')
     plt.yscale('log')
+    plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.savefig('unweighted_orthogonal_error.png')
     plt.show()
 
     plt.clf()
 
-    plt.title('Weighted Orthogonal Error Per Rank Per Rom')
+    plt.title('Goal-oriented Orthogonal Error Per Rank Per Rom')
     for reduction in reduction_list:
         if reduction == 'buithanh':
             plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(error_per_rank_per_method[reduction]),
@@ -132,6 +130,7 @@ def plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=Non
     plt.xlabel('rank')
     plt.ylabel('error')
     plt.yscale('log')
+    plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.savefig('weighted_orthogonal_error.png')
     plt.show()
 
@@ -166,7 +165,7 @@ def plot_reduction_error(X, U, A, B, C, reduction_list, rank_list, f=None, max_r
             unweighted_error_per_rank_per_method[reduction].append(
                 reduction_error(X, U, W, V, A, B, np.eye(X.shape[0]), f=f))
 
-    plt.title('Unweighted Reduction Error Per Rank Per Rom')
+    plt.title('Reduction Error Per Rank Per Rom')
     for reduction in reduction_list:
         if reduction == 'buithanh':
             plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(unweighted_error_per_rank_per_method[reduction]),
@@ -178,12 +177,13 @@ def plot_reduction_error(X, U, A, B, C, reduction_list, rank_list, f=None, max_r
     plt.xlabel('rank')
     plt.ylabel('error')
     plt.yscale('log')
+    plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.savefig('unweighted_reduction_error.png')
     plt.show()
 
     plt.clf()
 
-    plt.title('Weighted Reduction Error Per Rank Per Rom')
+    plt.title('Goal-oriented Reduction Error Per Rank Per Rom')
     for reduction in reduction_list:
         if reduction == 'buithanh':
             plt.plot(np.arange(1, max_rank_buithanh + 1), np.array(error_per_rank_per_method[reduction]),
@@ -195,6 +195,7 @@ def plot_reduction_error(X, U, A, B, C, reduction_list, rank_list, f=None, max_r
     plt.xlabel('rank')
     plt.ylabel('error')
     plt.yscale('log')
+    plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
     plt.savefig('weighted_reduction_error.png')
     plt.show()
 
