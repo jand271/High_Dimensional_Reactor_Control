@@ -11,6 +11,18 @@ addpath(genpath(yalmip_path));
 r = 1;
 f = Bp * U(1,1);
 
+if r < 2
+    [POD_Phi,~,~] = svd(X);
+    V0 = POD_Phi(:,1:r);
+else
+    load(fullfile('output',['buithanh_rank_',num2str(r-1),'.mat']))
+    V0 = zeros(size(X,1),r);
+    V0(:,1:r-1) = V;
+    clear V W compute_time_s;
+    [POD_Phi,~,~] = svd(X);
+    V0(:,r) = POD_Phi(:,1);
+end
+
 tic
 V = buithanh(...
     eye(size(Ap,1)),...
@@ -19,7 +31,8 @@ V = buithanh(...
     X,...
     r,...
     Cp,...
-    1);
+    1,...
+    V0);
 compute_time_s = toc;
 W = V;
 save(fullfile('output',['buithanh_rank_',num2str(r),'.mat']),...
