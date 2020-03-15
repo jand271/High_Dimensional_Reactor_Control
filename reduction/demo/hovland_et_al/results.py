@@ -13,12 +13,9 @@ if __name__ == "__main__":
     U = snapshots["U"]
 
     reduction_list = [
-        'balanced_truncation',
-        'buithanh',
+        'pod',
         'carlberg',
-        'grad_descent',
-        'modal',
-        'pod']
+        'buithanh']
 
     rank_list = [1, 2, 3, 4, 5]
 

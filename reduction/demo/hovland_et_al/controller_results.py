@@ -20,11 +20,9 @@ def main(max_rank_buithanh=None):
     x0 = X[:, 0]
 
     reduction_list = [
-        'balanced_truncation',
+        'pod',
         'carlberg',
-        'grad_descent',
-        'modal',
-        'pod']
+        'buithanh']
 
     rank_list = [1, 2, 3, 4, 5]
 

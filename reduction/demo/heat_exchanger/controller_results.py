@@ -21,10 +21,8 @@ def main():
     x0 = X[:, 0]
 
     reduction_list = [
-        'carlberg',
-        'grad_descent',
-        'modal',
-        'pod']
+        'pod',
+        'carlberg']
 
     rank_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
