@@ -75,10 +75,11 @@ if __name__ == "__main__":
 
     X = np.zeros((nx, ns))
     X[:, 0] = 500 * np.ones((nx,))
-    u = -300 * np.ones((B.shape[1],))
+
+    U = -300 * np.ones((B.shape[1], ns - 1))
 
     for i in range(1, ns):
-        X[:, i] = A @ X[:, i - 1] + B @ u
+        X[:, i] = A @ X[:, i - 1] + B @ U[:, i - 1] + f
 
     savemat('heat_exchanger_model.mat', {'A': A, 'B': B, 'f': f, 'C': C})
-    savemat('snapshots_heat_exchanger_model.mat', {'X': X})
+    savemat('snapshots_heat_exchanger_model.mat', {'X': X, 'U': U})
