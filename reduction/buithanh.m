@@ -1,4 +1,4 @@
- function [V] = buithanh(M, K, f, U, m, C, beta)
+ function [V] = buithanh(M, K, f, U, m, C, beta, V0)
 %{
  Complete model reduction strategy by Bui-Thanh with YALMIP
     :param M: Mass Matrix
@@ -23,9 +23,8 @@ Gamma = sdpvar(ns,m);
 alpha = sdpvar(m,ns);
 
 % Assign initial value for decision variable Phi and Gamma
-[POD_Phi,~,~] = svd(U);
-assign(Phi, POD_Phi(:,1:m));
-assign(Gamma, U \ POD_Phi(:,1:m))
+assign(Phi, V0);
+assign(Gamma, U \ V0)
 
 % #### Constraints #####
 constraints = [];
@@ -76,7 +75,10 @@ optimize(constraints,objective, sdpsettings(...
     'verbose',1,...
     'usex0',1,...
     'showprogress', 1,...
-    'cachesolvers', 1));
+    'cachesolvers', 1,...
+    'fmincon.MaxIter',500,...
+    'fmincon.MaxFunEvals',10000,...
+    'fmincon.TolProjCGAbs', 1e-6));
 toc
 
 V = value(Phi);
