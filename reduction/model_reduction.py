@@ -20,7 +20,7 @@ class ModelReduction(object):
 
         self.W = W
         self.V = V
-        self.reduction_time = None
+        self.reduction_time = np.nan
 
         if V is None or W is None:
             assert V is None and W is None, "Why is just V or just W None?"
