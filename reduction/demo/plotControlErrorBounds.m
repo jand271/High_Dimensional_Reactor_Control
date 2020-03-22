@@ -44,6 +44,7 @@ for reduction = reduction_list
 end
 title('Norm of Du');
 legend(reduction_list, 'Interpreter', 'none', 'location','best')
+xlabel('rank');
 set(gca, 'YScale', 'log')
 saveas(gcf, 'Du_norm.png');
 
@@ -53,6 +54,7 @@ for reduction = reduction_list
     plot(DzNorms(reduction{1}), '*-');
 end
 title('Norm of Dz');
+xlabel('rank');
 legend(reduction_list, 'Interpreter', 'none', 'location','best')
 set(gca, 'YScale', 'log')
 saveas(gcf, 'Dz_norm.png');
