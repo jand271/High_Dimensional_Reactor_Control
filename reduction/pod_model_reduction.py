@@ -1,8 +1,8 @@
 import numpy as np
-from reduction.model_reduction import GalerkinModelReduction
+from reduction.model_reduction import ModelReduction
 
 
-class PODModelReduction(GalerkinModelReduction):
+class PODModelReduction(ModelReduction):
 
     def __init__(self, X, r):
         """
@@ -26,6 +26,7 @@ class PODModelReduction(GalerkinModelReduction):
     def compute_reduction_basis(self):
         """ Computes reduction basis from the left singular vectors of snapshot matrix """
         self.V = self.compute_svd_left_singular_vectors(self.X, self.r)
+        self.W = self.V
 
     def __str__(self):
         return 'pod_rank_' + str(self.r)

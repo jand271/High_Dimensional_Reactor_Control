@@ -39,7 +39,7 @@ class ModelReduction(object):
 
     @abstractmethod
     def compute_reduction_bases(self):
-        pass
+        self.compute_reduction_basis()
 
     @staticmethod
     def compute_state_space_reduction(A, B, f, C, V, W):
@@ -60,26 +60,6 @@ class ModelReduction(object):
             Cr = None
 
         return Ar, Br, fr, Cr
-
-
-class GalerkinModelReduction(ModelReduction):
-    def __init__(self, V=None):
-        """
-        Galerkin Model reduction constructor
-        :param V: reduction basis x^{full} = V x^{reduced}
-        """
-        super().__init__(W=V, V=V)
-
-    def compute_reduction_bases(self):
-        self.compute_reduction_basis()
-        self.W = self.V
-
-    def __str__(self):
-        return 'galerkin_model_reduction'
-
-    @abstractmethod
-    def compute_reduction_basis(self):
-        pass
 
     @staticmethod
     def compute_truncated_svd(X, r):

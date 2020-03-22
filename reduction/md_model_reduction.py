@@ -1,8 +1,8 @@
 import numpy as np
-from reduction.model_reduction import GalerkinModelReduction
+from reduction.model_reduction import ModelReduction
 
 
-class MDModelReduction(GalerkinModelReduction):
+class MDModelReduction(ModelReduction):
 
     def __init__(self, A_full, r):
         """

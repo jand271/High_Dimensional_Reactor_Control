@@ -1,10 +1,10 @@
 import numpy as np
 import matlab.engine
 from os.path import dirname
-from reduction.model_reduction import GalerkinModelReduction
+from reduction.model_reduction import ModelReduction
 
 
-class BuiThanh(GalerkinModelReduction):
+class BuiThanh(ModelReduction):
     def __init__(self, M, K, f, U, m, C=None, beta=0):
         """
         Constructor for model reduction strategy by Bui-Thanh
@@ -79,6 +79,7 @@ class BuiThanh(GalerkinModelReduction):
         eng.quit()
 
         self.V = self.compute_closest_orthonormal_matrix(V)
+        self.W = self.V
 
     def __str__(self):
         return 'buithanh_rank_' + str(self.m)
