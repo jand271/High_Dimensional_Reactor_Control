@@ -22,7 +22,7 @@ else
     V0(:,1:r-1) = V;
     clear V W compute_time_s;
     [POD_Phi,~,~] = svd(X);
-    V0(:,r) = POD_Phi(:,2);
+    V0(:,r) = POD_Phi(:,1);
 end
 
 tic
