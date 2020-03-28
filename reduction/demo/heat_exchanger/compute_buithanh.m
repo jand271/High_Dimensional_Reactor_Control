@@ -1,0 +1,26 @@
+clear all;
+
+yalmip_path = '/home/jand271/rot/YALMIP-master';
+
+load('heat_exchanger_model')
+f = f';
+load('snapshots_heat_exchanger_model')
+
+addpath('../../');
+addpath(genpath(yalmip_path));
+
+r = 1;
+
+tic
+V = buithanh(...
+    eye(size(A,1)),...
+    A, ...
+    f, ...
+    X,...
+    r,...
+    C,...
+    1);
+compute_time_s = toc;
+W = V;
+save(fullfile('output',['buithanh_rank_',num2str(r),'.mat']),...
+    'W','V','compute_time_s');

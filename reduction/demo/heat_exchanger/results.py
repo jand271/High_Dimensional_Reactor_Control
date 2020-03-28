@@ -15,10 +15,9 @@ if __name__ == "__main__":
 
     reduction_list = [
         'pod',
-        'carlberg',
-        'buithanh']
+        'carlberg']
 
-    rank_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    rank_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     max_rank_buithanh = 0
 
     plot_orthogonal_error(X, C, reduction_list, rank_list, max_rank_buithanh=max_rank_buithanh)

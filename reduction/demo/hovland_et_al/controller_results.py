@@ -17,7 +17,7 @@ def main(max_rank_buithanh=None):
 
     snapshots = loadmat('snapshots_of_hovland_el_al.mat')
     X = snapshots["X"]
-    x0 = X[:, 0]
+    x0 = X[:, 20]
 
     reduction_list = [
         'pod',
@@ -52,7 +52,7 @@ def main(max_rank_buithanh=None):
 
             controller = DLQR(Ar, Br, Q=Qr, R=R)
 
-            cost = compute_controller_cost(controller, V, x0, A, B, Q, R)
+            cost = compute_controller_cost(controller, W, V, x0, A, B, Q, R)
 
             controller_cost_per_rank[reduction].append(cost)
             rank_domain[reduction].append(rank)
@@ -61,7 +61,8 @@ def main(max_rank_buithanh=None):
         plt.plot(rank_domain[reduction], controller_cost_per_rank[reduction], label=reduction)
 
     controller = DLQR(A, B, Q=Q, R=R)
-    cost = compute_controller_cost(controller, np.eye(A.shape[0]), x0, A, B, Q, R)
+    I = np.eye(A.shape[0])
+    cost = compute_controller_cost(controller, I, I, x0, A, B, Q, R)
     plt.axhline(y=cost, label='full-order model', color='k', linestyle='--')
 
     plt.title('Cost per strategy per rank')
