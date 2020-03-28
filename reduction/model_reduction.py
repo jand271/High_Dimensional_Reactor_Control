@@ -62,12 +62,15 @@ class ModelReduction(object):
         return Ar, Br, fr, Cr
 
     @staticmethod
-    def compute_truncated_svd(X, r):
+    def compute_truncated_svd(X, r, compute_full=False):
         """ :return matrix of r left singular vectors of X """
         # Truncated SVD throws an error if requested rank is the same as the data matrix column; hence, call full svd
         # if needed
-        if r == X.shape[1]:
+        if compute_full or r == X.shape[1]:
             U, S, ZT = svd(X)
+            U = U[:, :r]
+            S = S[:r]
+            ZT = ZT[:r, :]
         elif r < X.shape[1]:
             truncated_svd = TruncatedSVD(n_components=r)
             US = truncated_svd.fit_transform(X)

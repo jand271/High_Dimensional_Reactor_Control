@@ -6,7 +6,15 @@ from reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 class Carlberg(WeightedPODModelReduction):
 
     def compute_reduction_basis(self):
-        self.V = self.algorithm_2(self.r, self.X, self.C_full.T @ self.C_full)
+        Theta = self.C_full.T @ self.C_full
+        Sigma_squared, V = eigh(Theta)
+        #Sigma_squared = np.maximum(Sigma_squared, 1e-10)
+        Theta = V @ np.diag(Sigma_squared) @ V.T
+        self.V = self.algorithm_2(self.r, self.X, Theta)
+        self.W = (np.linalg.inv(self.V.T @ Theta @ self.V) @ self.V.T @ Theta).T
+
+    def compute_reduction_bases(self):
+        self.compute_reduction_basis()
 
     def __str__(self):
         return 'carlberg_rank_' + str(self.r)
@@ -22,8 +30,7 @@ class Carlberg(WeightedPODModelReduction):
     @staticmethod
     def algorithm_2(rank, X, Theta):
         square_root_Theta = sqrtm(Theta)
-        assert np.sum(np.imag(sqrtm(Theta))) < 1e-6, \
-            "np.sum(np.imag(scipy.linalg.sqrtm(Theta))) = {:e} > 1e-6".format(np.sum(np.imag(sqrtm(Theta))))
-        square_root_Theta = np.real(square_root_Theta)
         X_bar = square_root_Theta @ X
-        return Carlberg.compute_svd_left_singular_vectors(X_bar, rank)
+        U, S, VT = WeightedPODModelReduction.compute_truncated_svd(X_bar, rank, compute_full=True)
+        SinvV = np.divide(VT.T, S)
+        return X @ SinvV
