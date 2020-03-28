@@ -53,11 +53,11 @@ hold on;
 for reduction = reduction_list
     plot(DzNorms(reduction{1}), '*-');
 end
-title('Norm of Dz');
+title('Norm of Dy');
 xlabel('rank');
 legend(reduction_list, 'Interpreter', 'none', 'location','best')
 set(gca, 'YScale', 'log')
-saveas(gcf, 'Dz_norm.png');
+saveas(gcf, 'Dy_norm.png');
 
 end
 
