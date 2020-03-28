@@ -64,17 +64,13 @@ if __name__ == "__main__":
     nx = A.shape[0]
     ns = 25
 
-    from controllers.dlqr import AffineDLQR
+    from controllers.dlqr import TrackingAffineDLQR
 
-    controller = AffineDLQR(A, B, f, 10)
-    C = controller.F[:, :-1]
-
-    # C = np.zeros((len(important_vertices), nx))
-    # for i in range(len(important_vertices)):
-    #     C[i, important_vertices[i]] = 1
+    controller = TrackingAffineDLQR(A, B, f, 10, xbar=500 * np.ones((nx,)))
+    C = controller.F[:, :nx] + controller.F[:, nx:-1]
 
     X = np.zeros((nx, ns))
-    X[:, 0] = 500 * np.ones((nx,))
+    X[:, 0] = 700 * np.ones((nx,))
 
     U = -300 * np.ones((B.shape[1], ns - 1))
 
