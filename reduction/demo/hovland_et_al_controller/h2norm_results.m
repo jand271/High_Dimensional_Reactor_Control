@@ -10,6 +10,6 @@ reduction_list = {
 rank_list = [1,2,3,4,5];
 max_buithanh_rank = 4;
 
-F = dlqr(Ap,Bp,Q,R);
+F = dlqr(double(Ap),double(Bp),double(Q),double(R));
 
 plotH2Norms(reduction_list, rank_list, max_buithanh_rank, Ap, Bp, F);
