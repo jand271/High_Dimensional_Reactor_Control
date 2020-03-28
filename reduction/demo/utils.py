@@ -31,15 +31,13 @@ def compute_and_save_roms(A, B, C, X, r):
         (A, r),
         (X, r)]
 
-    reduction_list = [Carlberg]
-    args_list = [(X, r, C)]
-
     for reduction, args in zip(reduction_list, args_list):
         compute_and_save_rom(reduction, *args)
 
 
 def projector(W, V):
-    return V @ np.linalg.inv(W.T @ V) @ W.T
+    return V @ W.T
+    #return V @ np.linalg.inv(W.T @ V) @ W.T
 
 
 def orthogonal_error(X, C, W, V):
@@ -200,11 +198,12 @@ def plot_reduction_error(X, U, A, B, C, reduction_list, rank_list, f=None, max_r
     plt.show()
 
 
-def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, xbar=None, ubar=None, time_steps=100):
+def compute_controller_cost(controller, W, V, x0, A, B, Q, R=None, f=None, xbar=None, ubar=None, time_steps=100):
     """
     Computes the LQR controller cost over a number of time steps
     :param controller: the controller to measure cost
-    :param V: reduction basis
+    :param W: left reduction basis
+    :param V: right reduction basis
     :param x0: starting state
     :param A: state transition matrix
     :param B: input to state matrix
@@ -235,7 +234,7 @@ def compute_controller_cost(controller, V, x0, A, B, Q, R=None, f=None, xbar=Non
     X[:, 0] = x0  # set starting state
 
     for i in range(1, time_steps):
-        u = controller.update_then_calculate_optimal_actuation(V.T @ X[:, i - 1])  # compute controller actuation
+        u = controller.update_then_calculate_optimal_actuation(W.T @ X[:, i - 1])  # compute controller actuation
         X[:, i] = A @ X[:, i - 1] + B @ u + f  # apply actuation to compute next state
         delx = X[:, i] - xbar
         delu = u - ubar
