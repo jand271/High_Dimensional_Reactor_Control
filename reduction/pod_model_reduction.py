@@ -3,7 +3,6 @@ from reduction.model_reduction import ModelReduction
 
 
 class PODModelReduction(ModelReduction):
-
     def __init__(self, X, r):
         """
         Computes vanilla POD model reduction basis of rank r with input snapshot matrix X
@@ -12,7 +11,7 @@ class PODModelReduction(ModelReduction):
         """
 
         """ Check constructor inputs """
-        assert type(X) is np.ndarray, 'snapshot matrix X must be a numpy array'
+        assert type(X) is np.ndarray, "snapshot matrix X must be a numpy array"
         assert isinstance(r, int), "desired rank r must be an int"
 
         self.X = X
@@ -29,4 +28,4 @@ class PODModelReduction(ModelReduction):
         self.W = self.V
 
     def __str__(self):
-        return 'pod_rank_' + str(self.r)
+        return "pod_rank_" + str(self.r)

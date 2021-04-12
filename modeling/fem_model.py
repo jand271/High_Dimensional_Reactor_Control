@@ -16,7 +16,9 @@ class FEMModel(ABC):
         """
 
         """ Check Constructor Inputs """
-        assert isinstance(fuel_assembly, ComponentAssembly), 'must input fuel_assembly, check that your initialization is has ()'
+        assert isinstance(
+            fuel_assembly, ComponentAssembly
+        ), "must input fuel_assembly, check that your initialization is has ()"
         assert isinstance(dt, float) or isinstance(dt, int)
         assert model_mesh is None or isinstance(model_mesh, Mesh)
         assert isinstance(nx, int)
@@ -27,7 +29,7 @@ class FEMModel(ABC):
             x0, x1, y0, y1 = fuel_assembly.get_domain_limits()
             p0 = Point(x0, y0)
             p1 = Point(x1, y1)
-            model_mesh = RectangleMesh(p0, p1, nx, ny, diagonal='crossed')
+            model_mesh = RectangleMesh(p0, p1, nx, ny, diagonal="crossed")
 
         self._fuel_assembly = fuel_assembly
         self._dt = dt

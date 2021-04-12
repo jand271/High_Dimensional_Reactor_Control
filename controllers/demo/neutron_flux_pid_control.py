@@ -21,14 +21,14 @@ if __name__ == "__main__":
         PHI_mean = np.mean(PHI.vector().get_local())
         s = controller(PHI_mean)
 
-        for component in fa.get_component_set('control_rods'):
+        for component in fa.get_component_set("control_rods"):
             component.set_volumetric_neutron_source(s)
 
     p = plot(PHI, vmin=4.6e12, vmax=9e12)
-    plt.colorbar(p, format='%.1e n/m^2/s')
-    for component in fa.get_component_set('control_rods'):
-        plt.annotate('{0:.0e}'.format(component.get_volumetric_neutron_source()), component.get_position())
-    plt.xlabel('x [m]')
-    plt.ylabel('y [m]')
-    plt.title('Fuel Assembly Neutron Flux at t={:.2f}s'.format(t))
-    plt.savefig('neutron_flux_PID_steady_state.png')
+    plt.colorbar(p, format="%.1e n/m^2/s")
+    for component in fa.get_component_set("control_rods"):
+        plt.annotate("{0:.0e}".format(component.get_volumetric_neutron_source()), component.get_position())
+    plt.xlabel("x [m]")
+    plt.ylabel("y [m]")
+    plt.title("Fuel Assembly Neutron Flux at t={:.2f}s".format(t))
+    plt.savefig("neutron_flux_PID_steady_state.png")

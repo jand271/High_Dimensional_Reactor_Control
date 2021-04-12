@@ -3,7 +3,6 @@ from reduction.model_reduction import ModelReduction
 
 
 class MDModelReduction(ModelReduction):
-
     def __init__(self, A_full, r):
         """
         Computes vanilla POD model reduction basis of rank r on the input dynamic system with input snapshot matrix
@@ -12,9 +11,9 @@ class MDModelReduction(ModelReduction):
         """
 
         """ Check constructor inputs """
-        assert type(A_full) is np.ndarray or A_full is None, 'A must be a numpy array'
+        assert type(A_full) is np.ndarray or A_full is None, "A must be a numpy array"
         assert isinstance(r, int), "desired rank r must be an int"
-        assert A_full.shape[0] == A_full.shape[1], 'A must be square'
+        assert A_full.shape[0] == A_full.shape[1], "A must be square"
 
         self.A_full = A_full
         self.r = r
@@ -26,4 +25,4 @@ class MDModelReduction(ModelReduction):
         self.V = self.compute_svd_left_singular_vectors(self.A_full, self.r)
 
     def __str__(self):
-        return 'modal_rank_' + str(self.r)
+        return "modal_rank_" + str(self.r)

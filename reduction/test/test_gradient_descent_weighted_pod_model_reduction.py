@@ -10,7 +10,7 @@ class TestGradientDescentWeightedPODModelReduction(TestCase):
         X = np.array([[3, 2, 2], [2, 3, -2]])
         U, S, Z = np.linalg.svd(X)
 
-        r = GradientDescentWeightedPODModelReduction(X, 2,  np.eye(2))
+        r = GradientDescentWeightedPODModelReduction(X, 2, np.eye(2))
 
         assert_left_singular_vectors_equal(r.V, U, tol=1e-5)
 

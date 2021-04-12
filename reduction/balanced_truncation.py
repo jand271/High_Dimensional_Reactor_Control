@@ -35,24 +35,25 @@ class BalancedTruncation(ModelReduction):
         super().__init__()
 
     def compute_reduction_bases(self):
-        source_file_directory = \
-            '/Users/jasonanderson/OneDrive - Leland Stanford Junior University/coursework/JA_AA290/joe_source'
+        source_file_directory = (
+            "/Users/jasonanderson/OneDrive - Leland Stanford Junior University/coursework/JA_AA290/joe_source"
+        )
 
         eng = matlab.engine.start_matlab()
 
         eng.eval("addpath('" + source_file_directory + "')")
 
-        eng.workspace['A'] = matlab.double(self.A.tolist())
-        eng.workspace['B'] = matlab.double(self.B.tolist())
-        eng.workspace['C'] = matlab.double(self.C.tolist())
-        eng.workspace['r'] = matlab.double([self.r])
+        eng.workspace["A"] = matlab.double(self.A.tolist())
+        eng.workspace["B"] = matlab.double(self.B.tolist())
+        eng.workspace["C"] = matlab.double(self.C.tolist())
+        eng.workspace["r"] = matlab.double([self.r])
 
         eng.eval("[~, ~, ~, W, V, ~] = balancedTruncationDiscrete(A, B, C, r);", nargout=0)
 
-        self.W = np.array(eng.workspace['W'])
-        self.V = np.array(eng.workspace['V'])
+        self.W = np.array(eng.workspace["W"])
+        self.V = np.array(eng.workspace["V"])
 
         eng.quit()
 
     def __str__(self):
-        return 'balanced_truncation_rank_' + str(self.r)
+        return "balanced_truncation_rank_" + str(self.r)

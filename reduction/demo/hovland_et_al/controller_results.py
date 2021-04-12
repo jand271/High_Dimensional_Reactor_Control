@@ -9,20 +9,17 @@ from reduction.demo.utils import compute_controller_cost
 
 
 def main(max_rank_buithanh=None):
-    model = loadmat('hovland_et_al_model.mat')
+    model = loadmat("hovland_et_al_model.mat")
     A = model["Ap"]
     B = model["Bp"]
     Q = model["Q"]
     R = model["R"]
 
-    snapshots = loadmat('snapshots_of_hovland_el_al.mat')
+    snapshots = loadmat("snapshots_of_hovland_el_al.mat")
     X = snapshots["X"]
     x0 = X[:, 20]
 
-    reduction_list = [
-        'pod',
-        'carlberg',
-        'buithanh']
+    reduction_list = ["pod", "carlberg", "buithanh"]
 
     rank_list = [1, 2, 3, 4, 5]
 
@@ -38,13 +35,13 @@ def main(max_rank_buithanh=None):
 
         for rank in rank_list:
 
-            if reduction == 'buithanh' and rank > max_rank_buithanh:
+            if reduction == "buithanh" and rank > max_rank_buithanh:
                 continue
 
-            data = loadmat(join('output', reduction + '_rank_' + str(rank)))
+            data = loadmat(join("output", reduction + "_rank_" + str(rank)))
 
-            W = data['W']
-            V = data['V']
+            W = data["W"]
+            V = data["V"]
 
             (Ar, Br, fr, Cr) = ModelReduction.compute_state_space_reduction(A, B, None, None, V, W)
 
@@ -63,15 +60,15 @@ def main(max_rank_buithanh=None):
     controller = DLQR(A, B, Q=Q, R=R)
     I = np.eye(A.shape[0])
     cost = compute_controller_cost(controller, I, I, x0, A, B, Q, R)
-    plt.axhline(y=cost, label='full-order model', color='k', linestyle='--')
+    plt.axhline(y=cost, label="full-order model", color="k", linestyle="--")
 
-    plt.title('Cost per strategy per rank')
-    plt.legend(loc='best')
-    plt.xlabel('rank')
-    plt.ylabel('cost')
-    plt.yscale('log')
+    plt.title("Cost per strategy per rank")
+    plt.legend(loc="best")
+    plt.xlabel("rank")
+    plt.ylabel("cost")
+    plt.yscale("log")
     plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
-    plt.savefig('DLQR_Cost.png')
+    plt.savefig("DLQR_Cost.png")
     plt.show()
 
 

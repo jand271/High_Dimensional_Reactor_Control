@@ -2,7 +2,7 @@ import numpy as np
 from scipy.io import loadmat, savemat
 
 if __name__ == "__main__":
-    model = loadmat('hovland_et_al_model.mat')
+    model = loadmat("hovland_et_al_model.mat")
 
     A = model["Ap"]
     B = model["Bp"]
@@ -21,4 +21,4 @@ if __name__ == "__main__":
     for i in range(1, ns):
         X[:, i] = A @ X[:, i - 1] + B @ U[:, i - 1]
 
-    savemat('snapshots_of_hovland_el_al.mat', {'X': X, 'U': U})
+    savemat("snapshots_of_hovland_el_al.mat", {"X": X, "U": U})

@@ -22,9 +22,9 @@ class PositionMPCController2D:
         f = np.zeros((3,))
 
         if soft:
-            self.solver = SoftCFTOCSolver(A, B, f, initial_position, initial_position, horizon,
-                                          umin=-max_speed,
-                                          umax=max_speed)
+            self.solver = SoftCFTOCSolver(
+                A, B, f, initial_position, initial_position, horizon, umin=-max_speed, umax=max_speed
+            )
         else:
             self.solver = CFTOCSolver(A, B, f, initial_position, initial_position, horizon, max_speed)
 
@@ -42,7 +42,6 @@ class PositionMPCController2D:
 
 
 class TestCFTOCSolver(unittest.TestCase):
-
     def test_basic_controller(self):
 
         for soft in [False, True]:
@@ -58,8 +57,9 @@ class TestCFTOCSolver(unittest.TestCase):
 
             for t in range(5):
                 robot_velocity = robot_controller.update_then_calculate_optimal_actuation(robot_position)
-                assert np.linalg.norm(robot_velocity,
-                                      np.inf) < max_speed + tolerance, "Robot controller violating constraints"
+                assert (
+                    np.linalg.norm(robot_velocity, np.inf) < max_speed + tolerance
+                ), "Robot controller violating constraints"
                 robot_position += robot_velocity * step_time
 
             assert np.linalg.norm(robot_position) < tolerance, "Robot unable to hold a zero position"
@@ -69,8 +69,9 @@ class TestCFTOCSolver(unittest.TestCase):
 
             for t in range(20):
                 robot_velocity = robot_controller.update_then_calculate_optimal_actuation(robot_position)
-                assert np.linalg.norm(robot_velocity,
-                                      np.inf) < max_speed + tolerance, "Robot controller violating constraints"
+                assert (
+                    np.linalg.norm(robot_velocity, np.inf) < max_speed + tolerance
+                ), "Robot controller violating constraints"
                 robot_position += robot_velocity * step_time
 
             assert np.linalg.norm(robot_position - tracking_position) < tolerance, "Robot unable to hold a new position"
@@ -80,8 +81,9 @@ class TestCFTOCSolver(unittest.TestCase):
 
             for t in range(20):
                 robot_velocity = robot_controller.update_then_calculate_optimal_actuation(robot_position)
-                assert np.linalg.norm(robot_velocity,
-                                      np.inf) < max_speed + tolerance, "Robot controller violating constraints"
+                assert (
+                    np.linalg.norm(robot_velocity, np.inf) < max_speed + tolerance
+                ), "Robot controller violating constraints"
                 robot_position += robot_velocity * step_time
 
             assert np.linalg.norm(robot_position - tracking_position) < tolerance, "Robot unable to hold a new position"
@@ -92,5 +94,5 @@ class TestCFTOCSolver(unittest.TestCase):
                 print("Hard Constraint Controller passed unit tests")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

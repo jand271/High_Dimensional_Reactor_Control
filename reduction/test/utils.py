@@ -4,7 +4,7 @@ import numpy as np
 def assert_left_singular_vectors_equal(A, B, tol=1e-10):
     """ asserts that the two input left singular bases are equivalent """
 
-    assert A.shape == B.shape, 'input SVD Us must have same shape'
+    assert A.shape == B.shape, "input SVD Us must have same shape"
 
     r = A.shape[1]
 

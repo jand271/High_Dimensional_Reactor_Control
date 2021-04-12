@@ -17,5 +17,5 @@ class TestComponent(unittest.TestCase):
         assert material == c.get_material()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
