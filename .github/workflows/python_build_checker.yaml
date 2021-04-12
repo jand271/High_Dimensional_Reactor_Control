@@ -1,0 +1,67 @@
+name: Python Build Checker
+
+on:
+  push:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+
+  python-style-checker:
+    name: Python Style Checks
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Black Python Style Check
+      uses: piotrpawlaczek/python-blacken@release/stable
+      with:
+        line-length: '120'
+
+  python-linter:
+    name: Python Linters
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Python Dependencies
+      run: pip install pylint
+
+    - name: Execute PyLint
+      run: pylint ./**/*.py --rcfile=.pylintrc
+
+  python-unit-tests:
+    name: Python Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Python Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install xmlrunner
+
+    - name: Execute Python Unit Tests
+      run: python .github/workflows/execute_python_unittests_to_xml.py . python_unittest_results
+
+    - name: Publish Python Unit Test Results
+      uses: mikepenz/action-junit-report@v2
+      with:
+        check_name: 'Python Unit Test Results'
+        report_paths: 'python_unittest_results/*.xml'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        fail_on_failure: 'true'
+        require_tests: 'true'
