@@ -28,14 +28,14 @@ class ModelReduction(object):
 
     def save_reduction_basis(self, directory, use_obj_str=True):
         """ Saves reduction basis to directory """
-        assert isinstance(directory, str), 'reduction basis save directory input must be a string'
+        assert isinstance(directory, str), "reduction basis save directory input must be a string"
         if use_obj_str:
-            directory = join(directory, self.__str__() + '.mat')
-        assert directory[-4:] == '.mat', "path must end in '.mat'"
-        savemat(directory, {'V': self.V, 'W': self.W, 'compute_time_s': self.reduction_time})
+            directory = join(directory, self.__str__() + ".mat")
+        assert directory[-4:] == ".mat", "path must end in '.mat'"
+        savemat(directory, {"V": self.V, "W": self.W, "compute_time_s": self.reduction_time})
 
     def __str__(self):
-        return 'model_reduction'
+        return "model_reduction"
 
     @abstractmethod
     def compute_reduction_bases(self):

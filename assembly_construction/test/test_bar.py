@@ -8,11 +8,11 @@ class TestSquareBar(unittest.TestCase):
         b1 = SquareBar(0, 0, 1)
         assert (0, 0) == b1.get_position()
 
-        b2 = SquareBar(0, 0, 1, plot_color='k')
-        assert 'k' == b2.get_plot_color()
+        b2 = SquareBar(0, 0, 1, plot_color="k")
+        assert "k" == b2.get_plot_color()
 
         material = Material()
-        b3 = SquareBar(0, 0, 1, plot_color='k', material=material)
+        b3 = SquareBar(0, 0, 1, plot_color="k", material=material)
         assert material == b3.get_material()
 
     def test_is_point_within(self):
@@ -43,11 +43,11 @@ class TestBar(unittest.TestCase):
         b1 = Bar(0, 0, 1, 2)
         assert (0, 0) == b1.get_position()
 
-        b2 = Bar(0, 0, 1, 2, plot_color='k')
-        assert 'k' == b2.get_plot_color()
+        b2 = Bar(0, 0, 1, 2, plot_color="k")
+        assert "k" == b2.get_plot_color()
 
         material = Material()
-        b3 = Bar(0, 0, 1, 2, plot_color='k', material=material)
+        b3 = Bar(0, 0, 1, 2, plot_color="k", material=material)
         assert material == b3.get_material()
 
     def test_is_point_within(self):
@@ -73,5 +73,5 @@ class TestBar(unittest.TestCase):
         assert not r.is_point_within(-1.5, -3)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

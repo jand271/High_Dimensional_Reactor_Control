@@ -8,11 +8,11 @@ class TestRod(unittest.TestCase):
         r1 = Rod(0, 0, 1)
         assert (0, 0) == r1.get_position()
 
-        r2 = Rod(0, 0, 1, plot_color='k')
-        assert 'k' == r2.get_plot_color()
+        r2 = Rod(0, 0, 1, plot_color="k")
+        assert "k" == r2.get_plot_color()
 
         material = Material()
-        r3 = Rod(0, 0, 1, plot_color='k', material=material)
+        r3 = Rod(0, 0, 1, plot_color="k", material=material)
         assert material == r3.get_material()
 
         fr = FuelRod(0, 0, 1)
@@ -44,5 +44,5 @@ class TestRod(unittest.TestCase):
         assert not r.is_point_within(-1.5, -1.5)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

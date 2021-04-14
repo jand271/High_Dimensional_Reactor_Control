@@ -9,7 +9,6 @@ B = step_time * np.eye(3)  # input velocity dynamics
 
 
 class TestDLQRController(unittest.TestCase):
-
     def test_main(self):
         step_time = 1
 
@@ -27,7 +26,6 @@ class TestDLQRController(unittest.TestCase):
 
 
 class TestAffineDLQRController(unittest.TestCase):
-
     def test_main(self):
         step_time = 1
 
@@ -46,7 +44,6 @@ class TestAffineDLQRController(unittest.TestCase):
 
 
 class TestTrackingDLQRController(unittest.TestCase):
-
     def test_main(self):
         step_time = 1
 
@@ -82,7 +79,6 @@ class TestTrackingDLQRController(unittest.TestCase):
 
 
 class TestTrackingAffineDLQRController(unittest.TestCase):
-
     def test_main(self):
         step_time = 1
 
@@ -118,5 +114,5 @@ class TestTrackingAffineDLQRController(unittest.TestCase):
         assert np.linalg.norm(robot_position - tracking_position) < tolerance, "Robot unable to hold a new position"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

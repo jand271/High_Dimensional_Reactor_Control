@@ -1,20 +1,31 @@
 class Material(object):
-    def __init__(self,
-                 thermal_conductivity=None,
-                 density=None,
-                 specific_heat_capacity=None,
-                 diffusion_length=None,
-                 absorption_macroscopic_cross_section=None,
-                 fission_macroscopic_cross_section=None):
+    def __init__(
+        self,
+        thermal_conductivity=None,
+        density=None,
+        specific_heat_capacity=None,
+        diffusion_length=None,
+        absorption_macroscopic_cross_section=None,
+        fission_macroscopic_cross_section=None,
+    ):
         """ Check Constructor Inputs """
 
-        for material_property in [thermal_conductivity, density, specific_heat_capacity, diffusion_length,
-                                  absorption_macroscopic_cross_section]:
-            assert material_property is None or isinstance(material_property, float), \
-                "Material property either not None or not a float"
+        for material_property in [
+            thermal_conductivity,
+            density,
+            specific_heat_capacity,
+            diffusion_length,
+            absorption_macroscopic_cross_section,
+        ]:
+            assert material_property is None or isinstance(
+                material_property, float
+            ), "Material property either not None or not a float"
 
-        assert fission_macroscopic_cross_section is None or isinstance(fission_macroscopic_cross_section, float) \
-               or fission_macroscopic_cross_section == 0, "Material property either not None or not a float"
+        assert (
+            fission_macroscopic_cross_section is None
+            or isinstance(fission_macroscopic_cross_section, float)
+            or fission_macroscopic_cross_section == 0
+        ), "Material property either not None or not a float"
 
         self._thermal_conductivity = thermal_conductivity
         self._density = density
@@ -47,12 +58,12 @@ class Material(object):
 class UO2(Material):
     def __init__(self):
         super().__init__(
-            thermal_conductivity=8000.,
+            thermal_conductivity=8000.0,
             density=1.0897e4,
             specific_heat_capacity=281.45,
             diffusion_length=1 / 3 / (1.51e1 * 1e-28),
             absorption_macroscopic_cross_section=2.34e22 * 1e6 * 5.94e2 * 1e-28,
-            fission_macroscopic_cross_section=2.34e22 * 1e6 * 5.94e2 * 1e-28
+            fission_macroscopic_cross_section=2.34e22 * 1e6 * 5.94e2 * 1e-28,
         )
         """
         Material Sources:
@@ -84,7 +95,7 @@ class H20_500K(Material):
             specific_heat_capacity=4.67e3,
             diffusion_length=0.142 * 1e-2,
             absorption_macroscopic_cross_section=0.022 * 1e2,
-            fission_macroscopic_cross_section=0.0
+            fission_macroscopic_cross_section=0.0,
         )
         """
         <https://www.engineeringtoolbox.com/>
@@ -94,4 +105,4 @@ class H20_500K(Material):
 
 class HighBoronSteel(Material):
     def __init__(self):
-        super().__init__(thermal_conductivity=1., density=1., specific_heat_capacity=1.)
+        super().__init__(thermal_conductivity=1.0, density=1.0, specific_heat_capacity=1.0)

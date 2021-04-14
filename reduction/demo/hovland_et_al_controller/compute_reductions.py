@@ -4,8 +4,8 @@ from controllers.dlqr import DLQR
 
 if __name__ == "__main__":
 
-    model = loadmat('hovland_et_al_model.mat')
-    snapshots = loadmat('snapshots_of_hovland_el_al.mat')
+    model = loadmat("hovland_et_al_model.mat")
+    snapshots = loadmat("snapshots_of_hovland_el_al.mat")
 
     A = model["Ap"]
     B = model["Bp"]

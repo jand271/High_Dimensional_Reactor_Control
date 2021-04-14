@@ -6,6 +6,7 @@ from fenics import *
 if __name__ == "__main__":
 
     import time
+
     start_time = time.time()
 
     fa = ComponentAssemblyB()
@@ -20,8 +21,9 @@ if __name__ == "__main__":
 
     A, B, f = model.state_transition_model()
     from controllers.dlqr import *
-    controller = TrackingAffineDLQR(A, B, f, xbar=500*np.ones((A.shape[0],)), max_iter=15)
-    #controller = AffineDLQR(A, B, f)
+
+    controller = TrackingAffineDLQR(A, B, f, xbar=500 * np.ones((A.shape[0],)), max_iter=15)
+    # controller = AffineDLQR(A, B, f)
 
     # controller = HeatExchangerMPCController(
     #     model,
@@ -32,8 +34,8 @@ if __name__ == "__main__":
     fa.plot()
     model.step_time()
     model._component_hash_map.plot()
-    plt.title('Fuel Assembly and Mesh')
-    plt.savefig('Fuel_Assembly_and_Mesh.png')
+    plt.title("Fuel Assembly and Mesh")
+    plt.savefig("Fuel_Assembly_and_Mesh.png")
     plt.clf()
 
     t = 0
@@ -43,17 +45,17 @@ if __name__ == "__main__":
         T = model.step_time()
         q_dots = controller.update_then_calculate_optimal_actuation(T.vector().get_local())
 
-        for q_dot, component in zip(q_dots, fa.get_component_set('controllable_q_dot')):
+        for q_dot, component in zip(q_dots, fa.get_component_set("controllable_q_dot")):
             component.set_volumetric_power_density(q_dot)
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
     p = plot(T)
-    plt.colorbar(p, format='%.1f K')
-    for component in fa.get_component_set('controllable_q_dot'):
-        plt.annotate('{0:.1f}'.format(component.get_volumetric_power_density()), component.get_position())
+    plt.colorbar(p, format="%.1f K")
+    for component in fa.get_component_set("controllable_q_dot"):
+        plt.annotate("{0:.1f}".format(component.get_volumetric_power_density()), component.get_position())
 
-    plt.xlabel('x [m]')
-    plt.ylabel('y [m]')
-    plt.title('Fuel Assembly Steady State Temperature at t={:.2f}s'.format(t))
-    plt.savefig('test.png')
+    plt.xlabel("x [m]")
+    plt.ylabel("y [m]")
+    plt.title("Fuel Assembly Steady State Temperature at t={:.2f}s".format(t))
+    plt.savefig("test.png")

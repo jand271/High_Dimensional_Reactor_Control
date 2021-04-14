@@ -8,7 +8,7 @@ from reduction.demo.utils import compute_controller_cost
 
 
 def main():
-    model = loadmat('heat_exchanger_model.mat')
+    model = loadmat("heat_exchanger_model.mat")
     A = model["A"]
     B = model["B"]
     f = model["f"].flatten()
@@ -16,15 +16,14 @@ def main():
 
     xbar = 500 * np.ones((A.shape[0]))
 
-    snapshots = loadmat('snapshots_heat_exchanger_model.mat')
+    snapshots = loadmat("snapshots_heat_exchanger_model.mat")
     X = snapshots["X"]
     x0 = X[:, -1]
     from numpy.random import multivariate_normal
+
     x0 = 600 + multivariate_normal(np.zeros((X.shape[0],)), 10 * np.eye(X.shape[0]))
 
-    reduction_list = [
-        'pod',
-        'carlberg']
+    reduction_list = ["pod", "carlberg"]
 
     rank_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
@@ -32,7 +31,7 @@ def main():
     ubar = np.linalg.lstsq(B, (np.eye(*A.shape) - A) @ xbar - f)[0]
     I = np.eye(A.shape[0])
     cost = compute_controller_cost(full_controller, I, I, x0, A, B, Q, xbar=xbar, ubar=ubar)
-    plt.axhline(y=cost, label='full-order model', color='k', linestyle='--')
+    plt.axhline(y=cost, label="full-order model", color="k", linestyle="--")
 
     controller_cost_per_rank = {}
     rank_domain = {}
@@ -42,10 +41,10 @@ def main():
         rank_domain[reduction] = []
 
         for rank in rank_list:
-            data = loadmat(join('output', reduction + '_rank_' + str(rank)))
+            data = loadmat(join("output", reduction + "_rank_" + str(rank)))
 
-            W = data['W']
-            V = data['V']
+            W = data["W"]
+            V = data["V"]
 
             (Ar, Br, fr, Cr) = ModelReduction.compute_state_space_reduction(A, B, f, None, V, W)
 
@@ -61,12 +60,12 @@ def main():
     for reduction in reduction_list:
         plt.plot(rank_domain[reduction], controller_cost_per_rank[reduction], label=reduction)
 
-    plt.title('Cost per strategy per rank')
-    plt.legend(loc='best')
-    plt.xlabel('rank')
-    plt.ylabel('cost')
-    plt.yscale('log')
-    plt.savefig('DLQR_Cost.png')
+    plt.title("Cost per strategy per rank")
+    plt.legend(loc="best")
+    plt.xlabel("rank")
+    plt.ylabel("cost")
+    plt.yscale("log")
+    plt.savefig("DLQR_Cost.png")
     plt.show()
 
 

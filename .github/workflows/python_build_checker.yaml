@@ -1,0 +1,87 @@
+name: Python Build Checker
+
+on:
+  push:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+
+  python-style-checker:
+    name: Python Style Checks
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Black Python Style Check
+      uses: piotrpawlaczek/python-blacken@release/stable
+      with:
+        line-length: '120'
+
+  python-linter:
+    name: Python Linters
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Python Dependencies
+      run: pip install pylint
+
+    - name: Execute PyLint
+      run: pylint ./**/*.py --rcfile=.pylintrc
+
+  python-unit-tests:
+    name: Python Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Branch
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Python Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install xmlrunner coverage
+
+    - name: Execute Python Unit Tests
+      run: python .github/workflows/execute_python_unittests_to_xml.py . python_unittest_results python_coverage_results.xml
+
+    - name: Retreive Pull Request Number
+      uses: jwalton/gh-find-current-pr@v1
+      id: findPr
+
+    - name: Publish Cobertura Coverage Report
+      if: github.event_name == 'pull_request' || success() && steps.findPr.outputs.number # only happens if pull request exists
+      uses: 5monkeys/cobertura-action@v8
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }} # The GITHUB_TOKEN for this repo
+        path: python_coverage_results.xml # Path to the cobertura file.
+        skip_covered: false # If files with 100% should be skipped from report.
+        minimum_coverage: 100 # Minimum allowed coverage percentage as an integer.
+        show_line: true # Show line rate as specific column.
+        show_branch: true # Show branch rate as specific column.
+        show_class_names: true # Show class names instead of file names.
+        show_missing: true # Show line numbers of statements, per module, that was not executed.
+        pull_request_number: ${{ steps.findPr.outputs.number }}
+        only_changed_files: true # Only show coverage for changed files.
+        report_name: Python Unit Test Coverage Report # Use a unique name for the report and comment.
+
+    - name: Publish Python Unit Test Results
+      uses: mikepenz/action-junit-report@v2
+      with:
+        check_name: 'Python Unit Test Results'
+        report_paths: 'python_unittest_results/*.xml'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        fail_on_failure: true
+        require_tests: true

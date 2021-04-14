@@ -4,7 +4,6 @@ from reduction.pod_model_reduction import PODModelReduction
 
 
 class WeightedPODModelReduction(ABC, PODModelReduction):
-
     def __init__(self, X, r, C_full):
         """
         Constructor for weighted POD model reduction

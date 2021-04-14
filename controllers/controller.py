@@ -4,7 +4,6 @@ from abc import ABC, abstractmethod
 
 
 class Controller(object):
-
     @abstractmethod
     def set_desired_state(self, state):
         """ set desired state to track """

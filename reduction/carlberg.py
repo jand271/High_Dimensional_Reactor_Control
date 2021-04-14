@@ -4,11 +4,10 @@ from reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 
 
 class Carlberg(WeightedPODModelReduction):
-
     def compute_reduction_basis(self):
         Theta = self.C_full.T @ self.C_full
         Sigma_squared, V = eigh(Theta)
-        #Sigma_squared = np.maximum(Sigma_squared, 1e-10)
+        # Sigma_squared = np.maximum(Sigma_squared, 1e-10)
         Theta = V @ np.diag(Sigma_squared) @ V.T
         self.V = self.algorithm_2(self.r, self.X, Theta)
         self.W = (np.linalg.inv(self.V.T @ Theta @ self.V) @ self.V.T @ Theta).T
@@ -17,7 +16,7 @@ class Carlberg(WeightedPODModelReduction):
         self.compute_reduction_basis()
 
     def __str__(self):
-        return 'carlberg_rank_' + str(self.r)
+        return "carlberg_rank_" + str(self.r)
 
     @staticmethod
     def algorithm_1(rank, X, Theta):

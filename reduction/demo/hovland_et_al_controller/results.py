@@ -3,7 +3,7 @@ from controllers.dlqr import DLQR
 from reduction.demo.utils import plot_orthogonal_error, plot_reduction_error
 
 if __name__ == "__main__":
-    model = loadmat('hovland_et_al_model.mat')
+    model = loadmat("hovland_et_al_model.mat")
     A = model["Ap"]
     B = model["Bp"]
     C = model["Cp"]
@@ -12,14 +12,11 @@ if __name__ == "__main__":
 
     F = DLQR(A, B, Q=Q, R=R).F
 
-    snapshots = loadmat('snapshots_of_hovland_el_al.mat')
+    snapshots = loadmat("snapshots_of_hovland_el_al.mat")
     X = snapshots["X"]
     U = snapshots["U"]
 
-    reduction_list = [
-        'pod',
-        'carlberg',
-        'buithanh']
+    reduction_list = ["pod", "carlberg", "buithanh"]
 
     rank_list = [1, 2, 3, 4, 5]
 

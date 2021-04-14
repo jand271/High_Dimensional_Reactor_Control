@@ -5,17 +5,18 @@ from reduction.weighted_pod_model_reduction import WeightedPODModelReduction
 class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):
     def __init__(self, X, r, C_full, ridge_regularization=1, iteration_count=100):
         """
-         Constructor for weighted POD model reduction
-         :param X: snapshot matrix
-         :param r: desired rank
-         :param C_full: state to output matrix of full order model
-         :param ridge_regularization: ridge regression regularization term scalar
-         :param iteration_count: number of descent iterations
-         """
+        Constructor for weighted POD model reduction
+        :param X: snapshot matrix
+        :param r: desired rank
+        :param C_full: state to output matrix of full order model
+        :param ridge_regularization: ridge regression regularization term scalar
+        :param iteration_count: number of descent iterations
+        """
 
         """ Check constructor inputs """
-        assert isinstance(ridge_regularization, int) or isinstance(ridge_regularization, float), \
-            "ridge_regularization must be an int or float"
+        assert isinstance(ridge_regularization, int) or isinstance(
+            ridge_regularization, float
+        ), "ridge_regularization must be an int or float"
         assert isinstance(iteration_count, int), "iteration_count must be an int"
         assert C_full.shape[1] == X.shape[0], "col of C_full must = row of X"
 
@@ -37,7 +38,7 @@ class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):
         """
 
         super().compute_reduction_basis()  # compute vanilla POD basis and assign to self.V
-        V = tf.Variable(self.V, name='V', dtype=tf.float32)  # let V starting point be vanilla POD basis
+        V = tf.Variable(self.V, name="V", dtype=tf.float32)  # let V starting point be vanilla POD basis
         # V = tf.Variable(np.random.normal(size=(self.nx, self.r)), name='V', dtype=tf.float32)
 
         X = tf.convert_to_tensor(self.X, dtype=tf.float32)
@@ -52,8 +53,8 @@ class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):
         opt = tf.optimizers.Adadelta()  # select an optimizer
 
         def loss():
-            """ Weighted SVD loss function with ridge regularization,
-            normalized by the number of elements within the norm """
+            """Weighted SVD loss function with ridge regularization,
+            normalized by the number of elements within the norm"""
             Q = self.C_full @ (tf.eye(self.nx) - V @ tf.transpose(V)) @ X
             return tf.norm(Q) / (ny * ns) + self.ridge_regularization * tf.norm(V) / (nx * r)
 
@@ -65,4 +66,4 @@ class GradientDescentWeightedPODModelReduction(WeightedPODModelReduction):
         self.V = self.compute_closest_orthonormal_matrix(V.value().numpy())
 
     def __str__(self):
-        return 'grad_descent_rank_' + str(self.r)
+        return "grad_descent_rank_" + str(self.r)

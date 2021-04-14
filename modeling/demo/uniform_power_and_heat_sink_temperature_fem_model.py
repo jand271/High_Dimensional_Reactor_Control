@@ -7,8 +7,11 @@ from fenics import *
 
 if __name__ == "__main__":
 
-    fa = ComponentAssembly(default_component=UnshapedComponent(
-        material=Material(thermal_conductivity=1., specific_heat_capacity=1., density=1.)))
+    fa = ComponentAssembly(
+        default_component=UnshapedComponent(
+            material=Material(thermal_conductivity=1.0, specific_heat_capacity=1.0, density=1.0)
+        )
+    )
 
     q = UniformPowerAndHeatSinkTemperatureFEMModel(fa, 0.05, nx=10, ny=10)
 
@@ -17,10 +20,10 @@ if __name__ == "__main__":
 
     for i in range(20):
         p = plot(q.step_time())
-        plt.colorbar(p, format='%.1f K')
-        plt.xlabel('x [m]')
-        plt.ylabel('y [m]')
-        plt.title('Fuel Assembly Temperature')
+        plt.colorbar(p, format="%.1f K")
+        plt.xlabel("x [m]")
+        plt.ylabel("y [m]")
+        plt.title("Fuel Assembly Temperature")
         plt.pause(0.5)
         plt.clf()
 

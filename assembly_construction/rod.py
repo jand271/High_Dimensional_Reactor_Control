@@ -4,8 +4,7 @@ from assembly_construction.material import UO2, HighBoronSteel, H20_500K
 
 
 class Rod(Component):
-
-    def __init__(self, x_center, y_center, radius, plot_color='k', material=None):
+    def __init__(self, x_center, y_center, radius, plot_color="k", material=None):
         """
         Rod Constructor
         :param x_center: x position of Component
@@ -28,19 +27,20 @@ class Rod(Component):
     def plot(self):
         """ plots a circle patch of the rod on current axis """
         plt.gca().add_patch(
-            plt.Circle((self._x_position, self._y_position), self._radius, color=self._plot_color, alpha=0.5))
+            plt.Circle((self._x_position, self._y_position), self._radius, color=self._plot_color, alpha=0.5)
+        )
 
 
 class ControlRod(Rod):
     def __init__(self, x_center, y_center, radius):
-        super().__init__(x_center, y_center, radius, plot_color='g', material=HighBoronSteel())
+        super().__init__(x_center, y_center, radius, plot_color="g", material=HighBoronSteel())
 
 
 class FuelRod(Rod):
     def __init__(self, x_center, y_center, radius):
-        super().__init__(x_center, y_center, radius, plot_color='r', material=UO2())
+        super().__init__(x_center, y_center, radius, plot_color="r", material=UO2())
 
 
 class CoolingPipe(Rod):
     def __init__(self, x_center, y_center, radius):
-        super().__init__(x_center, y_center, radius, plot_color='b', material=H20_500K)
+        super().__init__(x_center, y_center, radius, plot_color="b", material=H20_500K)

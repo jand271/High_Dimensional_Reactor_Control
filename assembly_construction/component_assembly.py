@@ -16,7 +16,7 @@ class ComponentAssembly(object):
 
         self._component_points = []  # list of all component center points
         self._point_to_component_hash_map = {}  # hash map mapping component center point to component object
-        self._point_kd_tree = None  # KDTree for efficient find 2D nearest component 
+        self._point_kd_tree = None  # KDTree for efficient find 2D nearest component
         self._kd_tree_updated = False  # flag the keeps track of when the KDTree must be updated
 
         # hash map maps control variable to applicable list of components sets
@@ -80,4 +80,4 @@ class ComponentAssembly(object):
 
         plt.xlim(self._xlim)
         plt.ylim(self._ylim)
-        plt.gca().set_aspect('equal', adjustable='box')
+        plt.gca().set_aspect("equal", adjustable="box")

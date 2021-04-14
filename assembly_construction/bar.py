@@ -3,7 +3,7 @@ from assembly_construction.component import Component
 
 
 class Bar(Component):
-    def __init__(self, x_center, y_center, x_length, y_length, plot_color='k', material=None):
+    def __init__(self, x_center, y_center, x_length, y_length, plot_color="k", material=None):
         """
         Bar Constructor
         :param x_center: x position of Component
@@ -28,13 +28,18 @@ class Bar(Component):
 
     def plot(self):
         plt.gca().add_patch(
-            plt.Rectangle((self._x_position - self._x_length / 2, self._y_position - self._y_length / 2),
-                          self._x_length, self._y_length, color=self._plot_color,
-                          alpha=0.5))
+            plt.Rectangle(
+                (self._x_position - self._x_length / 2, self._y_position - self._y_length / 2),
+                self._x_length,
+                self._y_length,
+                color=self._plot_color,
+                alpha=0.5,
+            )
+        )
 
 
 class SquareBar(Bar):
-    def __init__(self, x_center, y_center, side_length, plot_color='k', material=None):
+    def __init__(self, x_center, y_center, side_length, plot_color="k", material=None):
         """
         Square Bar Constructor
         :param x_center: x position of Component

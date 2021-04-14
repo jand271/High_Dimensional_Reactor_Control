@@ -7,5 +7,5 @@ class TestMaterial(unittest.TestCase):
         Material()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

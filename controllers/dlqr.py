@@ -40,21 +40,21 @@ class DLQR(Controller):
     def _check_constructor_inputs(self, A, B, horizon, Q, R):
         """ Checks Constructor inputs """
 
-        assert type(A) is np.ndarray, 'A must be a numpy array'
-        assert type(B) is np.ndarray, 'B must be a numpy array'
-        assert A.shape[0] == A.shape[1], 'A must be square'
-        assert A.shape[0] == B.shape[0], 'B must have the same number of rows as A'
-        assert isinstance(horizon, int) and horizon >= 0, 'horizon must be int >= 0'
+        assert type(A) is np.ndarray, "A must be a numpy array"
+        assert type(B) is np.ndarray, "B must be a numpy array"
+        assert A.shape[0] == A.shape[1], "A must be square"
+        assert A.shape[0] == B.shape[0], "B must have the same number of rows as A"
+        assert isinstance(horizon, int) and horizon >= 0, "horizon must be int >= 0"
 
         (nx, nu) = B.shape
 
         if Q is not None:
             assert isinstance(Q, np.ndarray)
-            assert Q.shape == (nx, nx), 'Q.shape must be (nx, nx)'
+            assert Q.shape == (nx, nx), "Q.shape must be (nx, nx)"
 
         if R is not None:
             assert isinstance(Q, np.ndarray)
-            assert R.shape == (nu, nu), 'R.shape must be (nu, nu)'
+            assert R.shape == (nu, nu), "R.shape must be (nu, nu)"
 
     def set_desired_state(self, state):
         print("WARNING: Attempted to set_desired_state of DLQR controller. Feature not available to DLQR")
@@ -74,8 +74,11 @@ class DLQR(Controller):
         else:  # finite horizon case
             Pk = self.Q
             for i in range(self.horizon):
-                Pk = self.A.T @ Pk @ self.A - (self.A.T @ Pk @ self.B) @ inv(self.R + self.B.T @ Pk @ self.B) @ (
-                        self.B.T @ Pk @ self.A) + self.Q
+                Pk = (
+                    self.A.T @ Pk @ self.A
+                    - (self.A.T @ Pk @ self.B) @ inv(self.R + self.B.T @ Pk @ self.B) @ (self.B.T @ Pk @ self.A)
+                    + self.Q
+                )
         self.F = inv(self.R + self.B.T @ Pk @ self.B) @ (self.B.T @ Pk @ self.A)
         return
 
@@ -111,9 +114,9 @@ class AffineDLQR(DLQR):
     def _check_constructor_inputs(self, A, B, f, horizon, Q, R):
         """ Checks Constructor inputs """
 
-        assert type(f) is np.ndarray, 'f must be a numpy array'
-        assert f.ndim == 1, 'f must be flat'
-        assert len(f) == A.shape[0], 'f must have same number of rows as A'
+        assert type(f) is np.ndarray, "f must be a numpy array"
+        assert f.ndim == 1, "f must be flat"
+        assert len(f) == A.shape[0], "f must have same number of rows as A"
         super()._check_constructor_inputs(A, B, horizon, Q, R)
         return
 
@@ -165,9 +168,9 @@ class TrackingAffineDLQR(AffineDLQR):
     def _check_constructor_inputs(self, A, B, f, horizon, Q, R, xbar):
         """ Checks Constructor inputs """
 
-        assert type(xbar) is np.ndarray, 'xbar must be a numpy array'
-        assert xbar.ndim == 1, 'xbar must be flat'
-        assert len(xbar) == A.shape[0], 'xbar must have same number of rows as A'
+        assert type(xbar) is np.ndarray, "xbar must be a numpy array"
+        assert xbar.ndim == 1, "xbar must be flat"
+        assert len(xbar) == A.shape[0], "xbar must have same number of rows as A"
 
         super()._check_constructor_inputs(A, B, f, horizon, Q, R)
 

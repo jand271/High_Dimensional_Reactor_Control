@@ -3,8 +3,8 @@ from reduction.demo.utils import compute_and_save_roms
 
 if __name__ == "__main__":
 
-    model = loadmat('heat_exchanger_model.mat')
-    snapshots = loadmat('snapshots_heat_exchanger_model.mat')
+    model = loadmat("heat_exchanger_model.mat")
+    snapshots = loadmat("snapshots_heat_exchanger_model.mat")
 
     A = model["A"]
     B = model["B"]

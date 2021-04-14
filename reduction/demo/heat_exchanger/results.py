@@ -3,19 +3,17 @@ from scipy.io import loadmat
 from reduction.demo.utils import plot_orthogonal_error, plot_reduction_error
 
 if __name__ == "__main__":
-    model = loadmat('heat_exchanger_model.mat')
+    model = loadmat("heat_exchanger_model.mat")
     A = model["A"]
     B = model["B"]
     C = model["C"]
     f = model["f"].flatten()
 
-    snapshots = loadmat('snapshots_heat_exchanger_model.mat')
+    snapshots = loadmat("snapshots_heat_exchanger_model.mat")
     X = snapshots["X"]
     U = snapshots["U"]
 
-    reduction_list = [
-        'pod',
-        'carlberg']
+    reduction_list = ["pod", "carlberg"]
 
     rank_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     max_rank_buithanh = 0

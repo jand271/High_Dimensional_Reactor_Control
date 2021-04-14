@@ -104,5 +104,5 @@ class TestComponentAssembly(unittest.TestCase):
         assert fa.find_component(2, -2) is default_component
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
